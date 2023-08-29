@@ -48,7 +48,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         otherProvisionalDiagnosis: otherProvisionalDiagnosis,
         diagnosisStatus: diagnosisStatus,
         Status: "A",
-        CreateUser: "Mizanur Rahaman Sobuz",
+        CreateUser: "Maruf",
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       });
   
@@ -115,21 +115,6 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               );
             })}
           </ul>
-          {/* <datalist id="browsers">
-            {provisionalDiagnosisList.map((item, key) => {
-              return (
-                <option
-                className="jiaurBD"
-                  key={key}
-                  value={
-                    item.ProvisionalDiagnosisCode +
-                    " " +
-                    item.ProvisionalDiagnosisName
-                  }
-                />
-              );
-            })}
-          </datalist> */}
         </div>
 
         <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">

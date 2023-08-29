@@ -36,13 +36,30 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   }, []);
   
 
+  // useEffect(() => {
+  //   if (healthCenterCode) {
+  //     axios
+  //       .get(`${API_URL}/api/health-center`, {
+  //         params: {
+  //           keyword: healthCenterCode,
+  //           limit: 5,
+  //         },
+  //       })
+  //       .then((response) => {
+  //         setHealthCenterList(response.data.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // }, [healthCenterCode]);
   useEffect(() => {
-    if (healthCenterCode) {
+    if (healthCenterName) {
       axios
         .get(`${API_URL}/api/health-center`, {
           params: {
-            keyword: healthCenterCode,
-            limit: 5,
+            keyword: healthCenterName,
+            limit: 8,
           },
         })
         .then((response) => {
@@ -52,7 +69,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           console.error(error);
         });
     }
-  }, [healthCenterCode]);
+  }, [healthCenterName]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -134,12 +151,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             {error1 && <p style={{ color: 'red' }}>{error1}</p>} 
         </div>
 
-        <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">
+        <div className="mb-3 pb-0 m-0 input-shadow rounded-pill position-relative">
           <input
             type="text"
-            value={healthCenterCode}
+            value={healthCenterName}
             onChange={(e) => {
-              setHealthCenterCode(e.target.value);
+              setHealthCenterName(e.target.value);
               setShowSuggestion(true);
               setError2("");
             }}
@@ -163,7 +180,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
                     setShowSuggestion(false);
                   }}
                 >
-                  {item.HealthCenterCode}{", "}{item.HealthCenterName}
+                  {item.HealthCenterName}
                 </li>
               );
             })}
