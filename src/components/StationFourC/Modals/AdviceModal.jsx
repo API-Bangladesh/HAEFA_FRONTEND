@@ -17,7 +17,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [status, setStatus] = useState("");
 
   const [adviceList, setAdviceList] = useState([]);
-  // const [error, setError] = useState('');
+  const [error, setError] = useState('');
+  const [showField, setShowField] = useState(false);
 
   useEffect(() => {
     axios
@@ -33,7 +34,13 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if(adviceText === ''){
+      setError('This field can not be empty!');
+    }
+
     let myFormData = { ...formData };
+
+    if(adviceText){
       myFormData.Advice.push({
         PatientId: PatientId,
         adviceId: adviceId,
@@ -49,6 +56,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setAdvice("");
       setStatus("");
       onHide();
+      setAdviceText("");
+      setShowField(false);
+    }
   };
 
   return (
@@ -77,10 +87,14 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
                   e.target.selectedOptions[0].getAttribute("AdviceText");
                 setAdviceId(e.target.value);
                 setAdviceText(getAdviceText);
-                // setError('');
+                setError('');
+                if(getAdviceText == "AD5"){
+                  console.log(getAdviceText);
+                  setShowField(true);
+                }
               }}
               // className="form-select input-padding rounded-pill select-form-padding"
-              className={`form-select input-padding rounded-pill select-form-padding`}
+              className={`form-select input-padding rounded-pill select-form-padding ${error ? 'error-input' : ""}`}
             >
               <option selected value="">
                 Select Advice Code
@@ -92,13 +106,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
                   AdviceText={item.AdviceCode}
                   value={item.AdviceId}
                   >
-                   
                     <span> {item.AdviceInBangla} </span>
                   </option>
                 );
               })}
             </select>
-              {/* {error && <p style={{ color: 'red' }}>{error}</p>}  */}
+              {error && <p style={{ color: 'red' }}>{error}</p>} 
           </div>
 
           <div className="mb-3 input-shadow rounded-pill">
@@ -130,15 +143,21 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               </option>
             </select>
           </div>
-          <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">
+            
+          {
+            showField ?
+            <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">
             <input
               type="text"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               className="form-control input-padding rounded-pill py-2 border-0"
-              placeholder="Write Status"
+              placeholder="Add advice"
             />
-          </div>
+            </div>
+            :
+            ""
+          }
         </form>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-center border-0 pt-0">
