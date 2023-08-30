@@ -5,11 +5,12 @@ import { API_URL } from "../../../helper/Constants";
 
 const PatientIllness = () => {
   const [isShown, setIsShown] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
 
-  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     axios

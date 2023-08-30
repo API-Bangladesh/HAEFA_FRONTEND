@@ -51,16 +51,7 @@ const TPuserData = () => {
   const [formData, setFormData] = useState({
     Complaints: [],
     PatientHOPresentIllness: [],
-    PatientHOPastIllness: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        illnessId: "0EDBC57B-B8D8-409D-BFDB-0A4A81DD7EBB",
-        otherIllness: "Test Past Other illness",
-        CreateUser: userName,
-        UpdateUser: "",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
+    PatientHOPastIllness: [],
     PatientHOFamilyIllness: [
       {
         PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
@@ -328,7 +319,7 @@ const TPuserData = () => {
                     eventKey="2"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>H/O past illness</Accordion.Header>
+                    <Accordion.Header>H/O Past illness</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
@@ -337,7 +328,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PastIllness className="toggle-btn" />
+                          <PastIllness className="toggle-btn" formData={formData} setFormData={setFormData} />
                         </div>
                       </div>
                     </Accordion.Body>

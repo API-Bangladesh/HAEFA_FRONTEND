@@ -2,20 +2,32 @@ import React, { useEffect, useState } from "react";
 import OthersField from "./OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
-const PatientIllness = () => {
+import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../../helper/localStorageHelper";
+
+const pastIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
+  const { patient } = useSelector((state) => state.patients);
+
+  const [PatientId] = useState(patient?.PatientId);
+  const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name; 
+
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
 
-  //PresentIllness
-  const [PresentIllness, setPresentIllness] = useState([]);
-  const getPresentIllnessData = async () => {
+  //pastIllness
+  const [pastIllness, setpastIllness] = useState([]);
+
+  const getpastIllnessData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/patient-ho-past-illness`);
 
       if (response.status === 200) {
-        setPresentIllness(response.data.data);
+        setpastIllness(response.data.data);
       }
     } catch (error) {
       console.error(error);
@@ -23,8 +35,53 @@ const PatientIllness = () => {
   };
 
   useEffect(() => {
-    getPresentIllnessData();
+    getpastIllnessData();
   }, []);
+
+  const handleChangeRadio = (illnessId, value) => {
+    let myFormData = { ...formData };
+
+    const index = myFormData.PatientHOPastIllness.findIndex(
+      (object) => object.illnessId === illnessId
+    );
+
+    if (index === -1) {
+      myFormData.PatientHOPastIllness.push({
+        PatientId: PatientId,
+        illnessId: illnessId,
+        otherIllness: "",
+        Status: value,
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
+
+    if (index === 0) {
+      myFormData.PatientHOPastIllness =
+        myFormData.PatientHOPastIllness.filter((item) => {
+          if (item.illnessId == illnessId) {
+            item.Status = value;
+          }
+          return item;
+        });
+    }
+
+    setFormData(myFormData);
+    console.log(myFormData?.PatientHOPastIllness);
+  };
+  
+
+  const handleRemove = (illnessId) => {
+    let myFormData = { ...formData };
+
+    myFormData.PatientHOPastIllness =
+      myFormData.PatientHOPastIllness.filter((item) => {
+        return item.illnessId != illnessId;
+      });
+
+    setFormData(myFormData);
+  };
 
   return (
     <>
@@ -43,7 +100,7 @@ const PatientIllness = () => {
 
       {isShown && (
         <div className="col-lg-12">
-          {PresentIllness.map((item) => (
+          {pastIllness.map((item) => (
             <div
               key={item.IllnessId}
               value={item.IllnessId}
@@ -59,10 +116,14 @@ const PatientIllness = () => {
                     type="radio"
                     name={item.IllnessCode}
                     id="inlineRadio1"
-                    value="past"
+                    value="0"
+                    onChange={(e) =>
+                      handleChangeRadio(item.IllnessId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.IllnessId);
                     }}
                   />
                   <label
@@ -78,10 +139,14 @@ const PatientIllness = () => {
                     type="radio"
                     name={item.IllnessCode}
                     id="inlineRadio2"
-                    value="option2"
+                    value="1"
+                    onChange={(e) =>
+                      handleChangeRadio(item.IllnessId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.IllnessId);
                     }}
                   />
                   <label
@@ -115,4 +180,4 @@ const PatientIllness = () => {
   );
 };
 
-export default PatientIllness;
+export default pastIllness;

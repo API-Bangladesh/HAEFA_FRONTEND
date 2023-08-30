@@ -100,7 +100,7 @@ const PrescriptionFinal = () => {
     });
   }
 
-  // console.log(rxDetail);
+  // console.log(advices);
 
   useEffect(() => {
     postPrescription();
@@ -272,7 +272,7 @@ const PrescriptionFinal = () => {
                   <p className="mb-0">
                     <b>{index + 1}</b>:&nbsp; {item.DrugCode}({item.DrugDose})
                     <br></br>
-                    {item.Frequency} &nbsp; {item.InstructionInBangla} &nbsp; -
+                    {item.OtherDrug} &nbsp; {item.Frequency} &nbsp; {item.InstructionInBangla} &nbsp; -
                     &nbsp;
                     {item.DrugDurationValue.includes("d") ||
                     item.DrugDurationValue.includes("D")
@@ -320,7 +320,8 @@ const PrescriptionFinal = () => {
                   {advices.map((item, index) => (
                     <div key={index}>
                       <p className="mb-0">
-                        <b>{index + 1}</b>:&nbsp; {item.AdviceInBangla}
+                        <b>{index + 1}</b>:&nbsp; 
+                        {item.AdviceInBangla === "তালিকায় যোগ করুন" ? item.Status : item.AdviceInBangla }
                       </p>
                     </div>
                   ))}

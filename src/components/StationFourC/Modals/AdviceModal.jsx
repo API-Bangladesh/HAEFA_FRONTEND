@@ -58,6 +58,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       onHide();
       setAdviceText("");
       setShowField(false);
+      // console.log(myFormData.Advice);
     }
   };
 
