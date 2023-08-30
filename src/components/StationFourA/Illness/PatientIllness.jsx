@@ -3,6 +3,7 @@ import OthersField from "../Illness/OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../../helper/localStorageHelper";
 
 const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
@@ -10,6 +11,9 @@ const PatientIllness = ({ formData, setFormData }) => {
 
   const [PatientId] = useState(patient?.PatientId);
   const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name; 
 
   const handleClick = (event) => {
     setIsShown((current) => !current);
@@ -46,10 +50,10 @@ const PatientIllness = ({ formData, setFormData }) => {
       myFormData.PatientHOPresentIllness.push({
         PatientId: PatientId,
         illnessId: illnessId,
-        otherIllness: "Test Present Other illness",
+        otherIllness: "",
         Status: value,
-        CreateUser: "Nazmul",
-        UpdateUser: "Nazmul1",
+        CreateUser: userName,
+        UpdateUser: userName,
         OrgId: OrgId,
       });
     }
@@ -65,7 +69,9 @@ const PatientIllness = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
+    console.log(myFormData?.PatientHOPresentIllness);
   };
+  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
