@@ -340,7 +340,7 @@ const TPuserData = () => {
                     className="input-shadow mb-3 rounded"
                   >
                     <Accordion.Header>Family history</Accordion.Header>
-                    <Accordion.Body>
+                    <Accordion.Body> 
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
@@ -348,7 +348,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <FamilyIllness className="toggle-btn" />
+                          <FamilyIllness className="toggle-btn"  formData={formData} setFormData={setFormData} />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -368,7 +368,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PatientSocial className="toggle-btn" />
+                          <PatientSocial className="toggle-btn"  formData={formData} setFormData={setFormData} />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -836,7 +836,7 @@ const TPuserData = () => {
                   {/* Abult Vaccination */}
 
                   <Accordion.Item
-                    eventKey="11"
+                    eventKey="11" 
                     className="input-shadow mb-3 rounded"
                   >
                     <Accordion.Header>Adult Vaccination</Accordion.Header>
