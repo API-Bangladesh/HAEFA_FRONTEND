@@ -2,14 +2,24 @@ import React, { useEffect, useState } from "react";
 import OthersField from "../Illness/OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
-const PatientIllness = () => {
+import { loggedInUserData } from "../../../helper/localStorageHelper";
+import { useSelector } from "react-redux";
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
+    const { patient } = useSelector((state) => state.patients);
+
+    const [PatientId] = useState(patient?.PatientId);
+    const [OrgId] = useState(patient?.OrgId);
+
+    const userData = loggedInUserData();
+    const userName = userData?.name; 
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
 
   //FamilyIllness
   const [FamilyIllness, setFamilyIllness] = useState([]);
+ 
   const getFamilyIllnessData = async () => {
     try {
       const response = await axios.get(
@@ -27,6 +37,53 @@ const PatientIllness = () => {
   useEffect(() => {
     getFamilyIllnessData();
   }, []);
+
+
+  const handleChangeRadio = (illnessId, value) => {
+    let myFormData = { ...formData };
+
+    const index = myFormData.PatientHOFamilyIllness.findIndex(
+      (object) => object.illnessId === illnessId
+    );
+
+    if (index === -1) {
+      myFormData.PatientHOFamilyIllness.push({
+        PatientId: PatientId,
+        illFamilyMemberId: "DB30904B-5844-4888-B22D-0F4E1F50FB74",
+        illnessId: illnessId,
+        otherIllness: "",
+        Status: value,
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
+
+    if (index === 0) {
+      myFormData.PatientHOFamilyIllness =
+        myFormData.PatientHOFamilyIllness.filter((item) => {
+          if (item.illnessId == illnessId) {
+            item.Status = value;
+          }
+          return item;
+        });
+    }
+
+    setFormData(myFormData);
+    console.log(myFormData?.PatientHOFamilyIllness);
+  };
+  
+
+  const handleRemove = (illnessId) => {
+    let myFormData = { ...formData };
+
+    myFormData.PatientHOFamilyIllness =
+      myFormData.PatientHOFamilyIllness.filter((item) => {
+        return item.illnessId != illnessId;
+      });
+
+    setFormData(myFormData);
+  };
 
   return (
     <>
@@ -60,10 +117,14 @@ const PatientIllness = () => {
                     type="radio"
                     name= {i}
                     id="Hypertension1"
-                    value="option1"
+                    value="0"
+                    onChange={(e) =>
+                      handleChangeRadio(item.IllnessId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.IllnessId);
                     }}
                   />
                   <label
@@ -79,10 +140,14 @@ const PatientIllness = () => {
                     type="radio"
                     name= {i}
                     id="Hypertension2"
-                    value="option2"
+                    value="1"
+                    onChange={(e) =>
+                      handleChangeRadio(item.IllnessId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.IllnessId);
                     }}
                   />
                   <label
