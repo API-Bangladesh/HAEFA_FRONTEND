@@ -52,28 +52,8 @@ const TPuserData = () => {
     Complaints: [],
     PatientHOPresentIllness: [],
     PatientHOPastIllness: [],
-    PatientHOFamilyIllness: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        illFamilyMemberId: "DB30904B-5844-4888-B22D-0F4E1F50FB74",
-        illnessId: "0EDBC57B-B8D8-409D-BFDB-0A4A81DD7EBB",
-        otherIllness: "",
-        Status: 1,
-        CreateUser: userName,
-        UpdateUser: "",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
-    SocialHistory: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        socialBehaviorId: "C91982FF-851A-4701-BD45-6A6C490E440B",
-        otherSocialBehavior: "Test SocialHistory",
-        CreateUser: userName,
-        UpdateUser: "Nazmul1",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
+    PatientHOFamilyIllness: [],
+    SocialHistory: [],
     TBScreening: [
       {
         PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
@@ -211,7 +191,7 @@ const TPuserData = () => {
 
   useEffect(() => {
     // console.log(formData.GeneralExamination[0]);
-    setPatientGender(patient.gender.GenderCode);
+    setPatientGender(patient?.gender?.GenderCode);
   }, [formData]);
 
   return (

@@ -2,8 +2,19 @@ import React, { useEffect, useState } from "react";
 import OthersField from "../Illness/OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
-const PatientIllness = () => {
+import { loggedInUserData } from "../../../helper/localStorageHelper";
+import { useSelector } from "react-redux";
+
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
+  const { patient } = useSelector((state) => state.patients);
+
+  const [PatientId] = useState(patient?.PatientId);
+  const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name; 
+
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
@@ -25,6 +36,51 @@ const PatientIllness = () => {
   useEffect(() => {
     getSocialHistoryData();
   }, []);
+
+  const handleChangeRadio = (illnessId, value) => {
+    let myFormData = { ...formData };
+
+    const index = myFormData.SocialHistory.findIndex(
+      (object) => object.illnessId === illnessId
+    );
+
+    if (index === -1) {
+      myFormData.SocialHistory.push({
+        PatientId: PatientId,
+        socialBehaviorId: "C91982FF-851A-4701-BD45-6A6C490E440B",
+        otherSocialBehavior: "Test SocialHistory",
+        Status: value,
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
+
+    if (index === 0) {
+      myFormData.SocialHistory =
+        myFormData.SocialHistory.filter((item) => {
+          if (item.illnessId == illnessId) {
+            item.Status = value;
+          }
+          return item;
+        });
+    }
+
+    setFormData(myFormData);
+    console.log(myFormData?.SocialHistory);
+  };
+  
+
+  const handleRemove = (illnessId) => {
+    let myFormData = { ...formData };
+
+    myFormData.SocialHistory =
+      myFormData.SocialHistory.filter((item) => {
+        return item.illnessId != illnessId;
+      });
+
+    setFormData(myFormData);
+  };
 
   return (
     <>
@@ -58,10 +114,14 @@ const PatientIllness = () => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking1"
-                    value="option3"
+                    value="0"
+                    onChange={(e) =>
+                      handleChangeRadio(item.SocialBehaviorId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.SocialBehaviorId);
                     }}
                   />
                   <label
@@ -77,10 +137,14 @@ const PatientIllness = () => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking2"
-                    value="option4"
+                    value="1"
+                    onChange={(e) =>
+                      handleChangeRadio(item.SocialBehaviorId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.SocialBehaviorId);
                     }}
                   />
                   <label

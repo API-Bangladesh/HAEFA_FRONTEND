@@ -185,9 +185,8 @@ const StationOneTable = ({ station, link, title }) => {
                     <td>
                       <span>{result.GivenName} </span> 
                       <span>{result.FamilyName}</span> 
-                      
                     </td>
-                    <td>{result.gender.GenderCode}</td>
+                    <td>{result?.gender?.GenderCode}</td>
                     <td>{result.martital_status.MaritalStatusCode}</td>
                     <td>Null</td>
                     <td>

@@ -167,7 +167,7 @@ const pastIllness = ({ formData, setFormData }) => {
               <OthersField />
             </div>
           </div>
-        </div>
+          </div>
       )}
 
       {/* show component on click  */}
