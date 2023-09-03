@@ -13,7 +13,7 @@ const PatientIllness = ({ formData, setFormData }) => {
 
     const userData = loggedInUserData();
     const userName = userData?.name; 
-  const handleClick = (event) => {
+    const handleClick = (event) => {
     setIsShown((current) => !current);
   };
 

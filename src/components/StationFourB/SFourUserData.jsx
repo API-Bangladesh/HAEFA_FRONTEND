@@ -75,11 +75,8 @@ const SFourUserData = () => {
 
   // Create a data object with the form input values
   const data = {
-    ObstetricsInfoChildMoralityCervicalCancer: {
+    ObstetricsInfoChildMoralityCervicalCancer: [{
       PatientId: PatientId,
-      menstruationProductId: menstruationProduct,
-      menstruationProductUsageTimeId: productReplace,
-      contraceptionMethodId: contraceptionMethod,
       gravida: gravida != "" ? gravida : "",
       para: para != "" ? para : "",
       stillBirth: stillBirth != "" ? stillBirth : "",
@@ -91,32 +88,30 @@ const SFourUserData = () => {
       female: moralityFemale != "" ? moralityFemale : "",
       isPregnant: isPregnant != "" ? isPregnant : "",
       lmp: lmp != "" ? lmp : "",
+      contraceptionMethodId: contraceptionMethod,
       comment: comment != "" ? comment : "",
-      Status: 1,
+      menstruationProductId: menstruationProduct,
+      menstruationProductUsageTimeId: productReplace,
       CreateUser: user,
-      UpdateUser: "Mihal",
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-    },
-    MenstrualHistory: {
+    }],
+    MenstrualHistory: [{
       PatientId: PatientId,
       lmp: lmp != "" ? lmp : "",
-      Status: 1,
       CreateUser: user,
-      UpdateUser: "Mihal",
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-    },
-
-    CervicalCancerScreening: {
+    }],
+    CervicalCancerScreening: [{
       PatientId: PatientId,
       ccScreeningDiagnosis: isConsent != "" ? isConsent : "",
       ccScreeningResultStatus: csResult != "" ? csResult : "",
       referralBiopsyStatus: isReferred != "" ? isReferred : "",
-      Status: 1,
       CreateUser: user,
-      UpdateUser: "Mihal",
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-    },
+    }],
   };
+
+  console.log(data);
 
   useEffect(() => {
     fetchData();
@@ -142,7 +137,7 @@ const SFourUserData = () => {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: response.data.message,
+            text: response?.data?.message,
           }).then(function () {
             window.location = "four-c-userinput";
           });
@@ -407,7 +402,7 @@ const SFourUserData = () => {
 
                 <div className="mb-3">
                   <label for="" className="form-label text-capitalize">
-                    Contraception Method
+                  * Contraception Method 
                   </label>
                   <select
                     // id="Select"
@@ -443,7 +438,7 @@ const SFourUserData = () => {
                 </div>
                 <div className="mb-3">
                   <label for="" className="form-label text-capitalize">
-                    What Product You Use During Menstruation?
+                  * What Product You Use During Menstruation?
                   </label>
                   <select
                     // id="Select"
@@ -467,7 +462,7 @@ const SFourUserData = () => {
                 </div>
                 <div className="mb-3">
                   <label for="" className="form-label text-capitalize">
-                    How often do you change / replace?
+                  * How often do you change / replace?
                   </label>
                   <select
                     // id="Select"
