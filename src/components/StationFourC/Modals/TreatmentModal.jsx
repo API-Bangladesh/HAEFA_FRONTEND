@@ -33,6 +33,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [specialInstruction, setSpecialInstruction] = useState("");
   const [specialInstructionList, setSpecialInstructionList] = useState([]);
   const [banglaInstruction, setBanglaInstruction] = useState(""); 
+  const [addDrug, setAddDrug] = useState("")
   const [error, setError] = useState('');
   // const [error2, setError2] = useState('');
 
@@ -97,10 +98,10 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
     if(drugCode === ''){
       setError('  This field can not be empty!');
     }
-    if(banglaInstruction === ''){
-      setError2('  This field can not be empty!');
-    }
-    if(drugCode && banglaInstruction){
+    // if(banglaInstruction === ''){
+    //   setError2('This field can not be empty!');
+    // }
+    if(drugCode){
       myFormData.TreatmentSuggestion.push({
         PatientId: PatientId,
         drugId: drugId,
@@ -116,6 +117,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         drugDose: drugDose,
         specialInstruction: "",
         comment: "",
+        hourly: addDrug,
         Status: "",
         CreateUser: doctorName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
@@ -134,6 +136,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setDrugSubstance("");
       setBanglaInstruction("");
       setSpecialInstruction("");
+      setAddDrug("");
     }
   };
 
@@ -187,6 +190,22 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               })}
           </ul>
         </div>
+
+        {
+          drugCode === "Others" &&
+          <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">
+          <input
+            type="text"
+            value={addDrug}
+            onChange={(e) => {
+              setAddDrug(e.target.value);
+            }}
+            // className="form-control input-padding rounded-pill py-2 border-0"
+            className={`form-control input-padding rounded-pill py-2 border-0 ${error ? 'error-input' : ''}`}
+            placeholder="Add Drug"
+            />
+          </div>
+        }
 
         {/*updated div here */}
         <div className="row mb-3 input-shadow rounded-pill">

@@ -157,7 +157,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
 
         <div className="mb-3 pb-0 m-0 input-shadow">
           <input
-            type="text"
+            type="number"
             // className="form-control input-padding py-2 border-0"
             className={`form-control input-padding py-2 border-0 ${error3 ? 'error-input' : ''}`}
             placeholder="Enter CcDuration Value"
@@ -170,7 +170,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
           <input
             type="text"
             className="form-control input-padding py-2 border-0"
-            placeholder="Enter Other CC"
+            placeholder="Enter Other CC (text)"
             onChange={(e) => {setOtherCC(e.target.value)}}
             value={otherCC}
           />

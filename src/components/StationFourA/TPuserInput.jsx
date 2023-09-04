@@ -48,26 +48,14 @@ const TPuserData = () => {
   // let patientGender = patient.gender.GenderCode;
   // console.log(patientGender);
   const [PatientId] = useState(patient?.PatientId);
+  
   const [formData, setFormData] = useState({
     Complaints: [],
     PatientHOPresentIllness: [],
     PatientHOPastIllness: [],
     PatientHOFamilyIllness: [],
     SocialHistory: [],
-    TBScreening: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        AnemiaSeverityId: null,
-        AnemiaSeverity: 4323,
-        coughGreaterThanMonth: 0,
-        LGERF: 0,
-        nightSweat: 0,
-        weightLoss: 0,
-        CreateUser: userName,
-        UpdateUser: "Nazmul1",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
+    TBScreening: [],
     GeneralExamination: [
       {
         PatientId: PatientId,
@@ -92,7 +80,7 @@ const TPuserData = () => {
     ],
     SystemicExamination: [],
     CurrentMedicationTaken: [],
-    PatientMentalHealth: [
+    PatientMentalHealth: [ 
       {
         PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
         questionId: "86740456-D17A-407A-8002-01544A6ADDBB",
@@ -100,7 +88,7 @@ const TPuserData = () => {
         comment: "Test",
         Status: "A",
         CreateUser: userName,
-        UpdateUser: "Nazmul1",
+        UpdateUser: userName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       },
     ],
@@ -128,6 +116,9 @@ const TPuserData = () => {
     ],
   });
 
+   console.log(formData?.ChildVaccination);
+   
+  //pushing tb-screening da.a
   const handleChangeTbScreening = (e) => {
     let myFormData = { ...formData };
 
@@ -139,13 +130,13 @@ const TPuserData = () => {
       LGERF: tbScreeningLGERF,
       nightSweat: tbScreeningnightSweat,
       weightLoss: tbScreeningweightLoss,
-      CreateUser:"Nazmul",
-      UpdateUser:"Nazmul1",
+      CreateUser: userName,
+      UpdateUser: userName,
       OrgId:"73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B"
     };
 
     setFormData(myFormData);
-    console.log(formData)
+    console.log(formData.TBScreening);
   };
 
   const handleSubmit = async (e) => {
@@ -727,10 +718,10 @@ const TPuserData = () => {
                           <thead>
                             <tr>
                               <th>Medicine Name</th>
+                              <th>Other Drug</th>
                               <th>Duration</th>
                               <th>Dose</th>
                               <th>Frequency</th>
-                              <th>Status</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -741,10 +732,10 @@ const TPuserData = () => {
                                   return (
                                     <tr key={key}>
                                       <td>{item.medicineName}</td>
+                                      <td>{item.Status}</td>
                                       <td>{item.doseValue}</td>
                                       <td>{item.dose}</td>
                                       <td>{item.frequencyHour}</td>
-                                      <td>{item.Status}</td>
                                       <td>
                                         <button
                                           className="btn btn-danger btn-sm"
@@ -788,7 +779,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PatientWellbeing className="toggle-btn" />
+                          <PatientWellbeing className="toggle-btn" formData={formData} setFormData={setFormData}/>
                         </div>
                       </div>
                     </Accordion.Body>

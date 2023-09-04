@@ -172,7 +172,7 @@ const FourCuserInput = () => {
                           <thead>
                             <tr>
                               <th>InvestigationId</th>
-                              <th>OtherInvestigation</th>
+                              {/* <th>OtherInvestigation</th> */}
                               <th>Instruction</th>
                               <th>Action</th>
                             </tr>
@@ -183,7 +183,7 @@ const FourCuserInput = () => {
                                 return (
                                   <tr key={key}>
                                     <td>{item.investigaion}</td>
-                                    <td>{item.otherInvestigation}</td>
+                                    {/* <td>{item.otherInvestigation}</td> */}
                                     <td>{item.instruction}</td>
                                     <td>
                                       <button
@@ -224,6 +224,7 @@ const FourCuserInput = () => {
                           <thead>
                             <tr>
                               <th>Drug Name</th>
+                              <th>Other Drug</th>
                               <th>Frequency Hours</th>
                               <th>Drug Dose</th>
                               <th>Duration</th>
@@ -237,6 +238,7 @@ const FourCuserInput = () => {
                                 return (
                                   <tr key={key}>
                                     <td>{item?.drugCode}</td>
+                                    <td>{item?.hourly}</td>
                                     <td>
                                       <div>{item?.frequency}</div>
                                       <div>{item?.comment}</div>
