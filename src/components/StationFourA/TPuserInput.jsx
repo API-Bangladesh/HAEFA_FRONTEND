@@ -80,18 +80,7 @@ const TPuserData = () => {
     ],
     SystemicExamination: [],
     CurrentMedicationTaken: [],
-    PatientMentalHealth: [ 
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        questionId: "86740456-D17A-407A-8002-01544A6ADDBB",
-        answerId: "8D2A4E6E-1C00-445B-9FEB-0D272D429746",
-        comment: "Test",
-        Status: "A",
-        CreateUser: userName,
-        UpdateUser: userName,
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
+    PatientMentalHealth: [],
     ChildVaccination: [
       {
         PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",

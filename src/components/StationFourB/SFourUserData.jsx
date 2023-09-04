@@ -142,6 +142,7 @@ const SFourUserData = () => {
             window.location = "four-c-userinput";
           });
         })
+        .then((res)=>console.log(res))
         .catch((error) => {
           console.error(error);
           Swal.fire({
