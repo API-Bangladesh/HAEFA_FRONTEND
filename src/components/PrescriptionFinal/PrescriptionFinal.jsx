@@ -100,6 +100,9 @@ const PrescriptionFinal = () => {
     });
   }
 
+  const handlePrint = () => {
+    window.print();
+  };
   // console.log(advices);
 
   useEffect(() => {
@@ -414,37 +417,9 @@ const PrescriptionFinal = () => {
         </div>
       </section>
 
-      {/* <div className="export container bg-light mt-3 p-3 d-flex justify-content-end">
-        <div className="prinBtns2">
-            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Instructions</Tooltip>} >
-              <Button className="me-2  bg-dark border-0">
-                <BsFileEarmarkPdfFill />
-              </Button>
-            </OverlayTrigger>
-        </div>
+      
 
-        <div className="prinBtns">
-          <OverlayTrigger
-            overlay={<Tooltip id="tooltip-disabled">Print</Tooltip>}
-          >
-            <Button className="me-2 border-0">
-              <BsFillPrinterFill />
-            </Button>
-          </OverlayTrigger>
-
-          <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Download pdf</Tooltip>} >
-              <Button className="me-2 border-0">
-                <BsFileEarmarkPdfFill />
-              </Button>
-            </OverlayTrigger>
-
-            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Download Image</Tooltip>} >
-              <Button className="me-2 border-0">
-                <BsImages />
-              </Button>
-            </OverlayTrigger>
-        </div>
-      </div> */}
+      {/* <button onClick={handlePrint} className="testPrint">print</button> */}
       <GlobalButton />
     </>
   );
