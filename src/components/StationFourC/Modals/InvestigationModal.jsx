@@ -49,7 +49,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         PatientId: PatientId,
         investigationId: investigationId,
         investigaion,
-        otherInvestigation: otherInvestigation,
+        otherInvestigation: "",
         instruction: positiveNegativeStatus,
         positiveNegativeStatus: positiveNegativeStatus,
         Status: "A",
@@ -61,7 +61,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   
       setInvestigationId("");
       setInvestigationCode("");
-      setOtherInvestigation("");
+      // setOtherInvestigation("");
       setPositiveNegativeStatus("");
       setInstruction("");
       setInvestigation("");
@@ -119,7 +119,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           </ul>
         </div>
 
-        <div className="mb-3 input-shadow rounded-pill">
+        {/* <div className="mb-3 input-shadow rounded-pill">
           <select
             id="Select"
             value={otherInvestigation}
@@ -172,7 +172,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             <option value="Chest X Ray">Chest X Ray</option>
             <option value="ECG">ECG</option>
           </select>
-        </div>
+        </div> */}
+
         <div className="my-3 d-flex justify-content-center">
           <div className="form-check form-check-inline">
             <input

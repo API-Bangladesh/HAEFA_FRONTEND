@@ -38,7 +38,7 @@ const Prescription = () => {
     }
   };
 
-  //console.log(prescriptionpreviewall);
+  console.log(prescriptionpreviewall.RxTaken);
   return (
     <>
       <SectionBanner title="Prescription Preview" />
@@ -182,7 +182,7 @@ const Prescription = () => {
             <h3>Current Medication Taken</h3>
             {prescriptionpreviewall.RxTaken?.map((item, index) => (
               <div key={index}>
-                <span>Drug: {item.Rx}</span>
+                <span>Drug: {item.Rx === "Others" ? <>{item?.Status}</> : <>{item.Rx}</>}</span>
                 {item.AllergyToMedication == 1 ? (
                   <span className="bg-danger text-decoration-none px-2">
                     Allergic to medication
