@@ -267,7 +267,7 @@ const PrescriptionFinal = () => {
             <div className="rightSide position-relative w-100 py-3 px-4">
               <h2 className="mb-4">&#8478;</h2>
 
-              {rxDetails.map((item, index) => (
+              {/* {rxDetails.map((item, index) => (
                 <div className="medicine mb-4" key={index}>
                   <p className="mb-0">
                     <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}({item.DrugDose})
@@ -286,6 +286,30 @@ const PrescriptionFinal = () => {
                       : item.DrugDurationValue.includes("c") ||
                         item.DrugDurationValue.includes("C")
                       ? item.DrugDurationValue.replace(/c/i, " চলবে")
+                      : ""}
+                  </p>
+                  <p>{}</p>
+                </div>
+              ))} */}
+               {rxDetails.map((item, index) => (
+                <div className="medicine mb-4" key={index}>
+                  <p className="mb-0">
+                    <b>{index + 1}</b>:&nbsp; {item.DrugCode}({item.DrugDose})
+                    <br></br>
+                    {item.OtherDrug} &nbsp; {item.Frequency} &nbsp;{" "}
+                    {item.InstructionInBangla} &nbsp; - &nbsp;
+                    {item.DrugDurationValue.includes("Day") ||
+                    item.DrugDurationValue.includes("day")
+                      ? item.DrugDurationValue.replace(/day/i, " দিন")
+                      : item.DrugDurationValue.includes("month") ||
+                        item.DrugDurationValue.includes("Month")
+                      ? item.DrugDurationValue.replace(/month/i, " মাস")
+                      : item.DrugDurationValue.includes("year") ||
+                        item.DrugDurationValue.includes("Year")
+                      ? item.DrugDurationValue.replace(/year/i, " বছর")
+                      : item.DrugDurationValue.includes("week") ||
+                        item.DrugDurationValue.includes("Week")
+                      ? item.DrugDurationValue.replace(/week/i, " সপ্তাহ")
                       : ""}
                   </p>
                   <p>{}</p>

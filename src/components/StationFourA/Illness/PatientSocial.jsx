@@ -13,7 +13,7 @@ const PatientIllness = ({ formData, setFormData }) => {
   const [OrgId] = useState(patient?.OrgId);
 
   const userData = loggedInUserData();
-  const userName = userData?.name; 
+  const userName = userData?.name;
 
   const handleClick = (event) => {
     setIsShown((current) => !current);
@@ -57,27 +57,24 @@ const PatientIllness = ({ formData, setFormData }) => {
     }
 
     if (index === 0) {
-      myFormData.SocialHistory =
-        myFormData.SocialHistory.filter((item) => {
-          if (item.illnessId == illnessId) {
-            item.Status = value;
-          }
-          return item;
-        });
+      myFormData.SocialHistory = myFormData.SocialHistory.filter((item) => {
+        if (item.illnessId == illnessId) {
+          item.Status = value;
+        }
+        return item;
+      });
     }
 
     setFormData(myFormData);
     console.log(myFormData?.SocialHistory);
   };
-  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
 
-    myFormData.SocialHistory =
-      myFormData.SocialHistory.filter((item) => {
-        return item.illnessId != illnessId;
-      });
+    myFormData.SocialHistory = myFormData.SocialHistory.filter((item) => {
+      return item.illnessId != illnessId;
+    });
 
     setFormData(myFormData);
   };
@@ -128,7 +125,11 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-label text-capitalize"
                     htmlFor="smoking1"
                   >
-                    no
+                    {item.SocialBehaviorCode === "Housing Mediation"
+                      ? "Catcha"
+                      : item.SocialBehaviorCode === "Drinking Water Sources"
+                      ? "Safe"
+                      : "No"}
                   </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -151,13 +152,16 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-label text-capitalize"
                     htmlFor="smoking2"
                   >
-                    yes
+                    {item.SocialBehaviorCode === "Housing Mediation"
+                      ? "Paka"
+                      : item.SocialBehaviorCode === "Drinking Water Sources"
+                      ? "Unsafe"
+                      : "Yes"}
                   </label>
                 </div>
               </div>
             </div>
           ))}
-
           {/* Other */}
           <div className="mb-1">
             <p className="font-16 mb-1">Others</p>
@@ -165,7 +169,6 @@ const PatientIllness = ({ formData, setFormData }) => {
               <OthersField />
             </div>
           </div>
-          {/* </div> */}
         </div>
       )}
 

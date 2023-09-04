@@ -2,15 +2,24 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
+import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../../helper/localStorageHelper";
 
-const PatientIllness = () => {
+const PatientIllness = ({formData, setFormData}) => {
   const [isShown, setIsShown] = useState(false);
   const [answers, setAnswers] = useState([]);
+
+  const { patient } = useSelector((state) => state.patients);
+
+  const [PatientId] = useState(patient?.PatientId);
+  const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name;
   
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
-
 
   useEffect(() => {
     axios
@@ -23,6 +32,52 @@ const PatientIllness = () => {
         console.error(error);
       });
   }, []);
+
+  const handleChangeRadio = (illnessId, value) => {
+    let myFormData = { ...formData };
+
+    const index = myFormData.PatientMentalHealth.findIndex(
+      (object) => object.illnessId === illnessId
+    );
+
+    if (index === -1) {
+      myFormData.PatientMentalHealth.push({
+        PatientId: PatientId,
+        questionId: illnessId,
+        answerId: value,
+        comment: "Test",
+        Status: "A",
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
+
+    if (index === 0) {
+      myFormData.PatientMentalHealth =
+        myFormData.PatientMentalHealth.filter((item) => {
+          if (item.illnessId == illnessId) {
+            item.Status = value;
+          }
+          return item;
+        });
+    }
+
+    setFormData(myFormData);
+    console.log(myFormData?.PatientMentalHealth);
+  };
+  
+
+  const handleRemove = (illnessId) => {
+    let myFormData = { ...formData };
+
+    myFormData.PatientMentalHealth =
+      myFormData.PatientMentalHealth.filter((item) => {
+        return item.illnessId != illnessId;
+      });
+
+    setFormData(myFormData);
+  };
 
   return (
     <>
@@ -41,7 +96,7 @@ const PatientIllness = () => {
 
       {isShown && (
         <div className="col-lg-12">
-          {answers.map((answer, i) => (
+          {answers?.map((answer, i) => (
             <div className="mb-2">
               <div className="">
                 <p className="font-16 mb-1">
@@ -70,16 +125,18 @@ const PatientIllness = () => {
                         onDoubleClick={(e) => {
                           e.target.checked = false;
                           e.target.value = null;
+                          handleRemove(answer.QuestionId);
                         }}
-                        onChange={(e) => {
-                          // Set the value of all other radio buttons in this question to null
-                          document.querySelectorAll(`input[name="question-${i}"]`).forEach(input => {
-                            if (input !== e.target) {
-                              input.checked = false;
-                              input.value = null;
-                            }
-                          });
-                        }}
+                        // onChange={(e) => {
+                        //   // Set the value of all other radio buttons in this question to null
+                        //   document.querySelectorAll(`input[name="question-${i}"]`).forEach(input => {
+                        //     if (input !== e.target) {
+                        //       input.checked = false;
+                        //       input.value = null;
+                        //     }
+                        //   });
+                        // }}
+                        onChange={() => handleChangeRadio(answer.QuestionId, ans.AnswerId)}
                       />
                       <label
                         className="form-check-label text-capitalize"
