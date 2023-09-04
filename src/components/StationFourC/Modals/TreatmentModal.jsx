@@ -35,7 +35,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [banglaInstruction, setBanglaInstruction] = useState(""); 
   const [addDrug, setAddDrug] = useState("")
   const [error, setError] = useState('');
-  // const [error2, setError2] = useState('');
+  const [error2, setError2] = useState('');
 
   const doctorName = loggedInUserData().name;
 
@@ -98,10 +98,10 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
     if(drugCode === ''){
       setError('  This field can not be empty!');
     }
-    // if(banglaInstruction === ''){
-    //   setError2('This field can not be empty!');
-    // }
-    if(drugCode){
+    if(banglaInstruction === ''){
+      setError2('This field can not be empty!');
+    }
+    if(drugCode && banglaInstruction){
       myFormData.TreatmentSuggestion.push({
         PatientId: PatientId,
         drugId: drugId,
@@ -311,10 +311,10 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             onChange={(e) => {
             setSpecialInstruction(e.target.value); 
             setBanglaInstruction(e.target.options[e.target.selectedIndex].getAttribute("data-bangla-instruction"));
-            // setError2('');
+            setError2('');
           }}
             // className="form-control input-padding rounded-pill py-2 border-0"
-            className={`form-control input-padding rounded-pill py-2 border-0`}
+            className={`form-control input-padding rounded-pill py-2 border-0 ${error2 ? 'error-input' : ''}`}
           >
             <option selected value="">
               -- Select --
@@ -325,7 +325,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               </option>
             ))}
           </select>
-          {/* {error2 && <p style={{ color: 'red' }}>{error2}</p>} */}
+          {error2 && <p style={{ color: 'red' }}>{error2}</p>}
         </div>
 
       </Modal.Body>

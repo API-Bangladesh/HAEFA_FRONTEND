@@ -137,7 +137,7 @@ const SFourUserData = () => {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: response?.data?.message,
+            text: response?.data?.status?.message
           }).then(function () {
             window.location = "four-c-userinput";
           });

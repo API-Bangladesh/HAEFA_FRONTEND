@@ -485,3 +485,8 @@ div:where(.swal2-icon) {
 }
 
 
+@media print {
+  .testPrint {
+    opacity: 0!important;
+  }
+}

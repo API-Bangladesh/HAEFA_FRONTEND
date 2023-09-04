@@ -203,6 +203,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               <option>unit</option>
               <option>mg</option>
               <option>ml</option>
+              <option>pcs</option>
+              <option>spoon</option>
             </select>
           </div>
         </div>
