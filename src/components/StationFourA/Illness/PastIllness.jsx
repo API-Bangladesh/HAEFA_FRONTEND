@@ -116,7 +116,7 @@ const pastIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.IllnessCode}
                     id="inlineRadio1"
-                    value="0"
+                    value="no"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }
@@ -139,7 +139,7 @@ const pastIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.IllnessCode}
                     id="inlineRadio2"
-                    value="1"
+                    value="yes"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }

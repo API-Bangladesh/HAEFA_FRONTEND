@@ -111,7 +111,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking1"
-                    value="0"
+                    value="no"
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
@@ -138,7 +138,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking2"
-                    value="1"
+                    value="yes"
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
