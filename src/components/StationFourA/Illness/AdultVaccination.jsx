@@ -46,6 +46,7 @@ const PatientIllness = ({formData, setFormData}) => {
         PatientId: PatientId,
         vaccineId: illnessId,
         otherVaccine: value,
+        Status: "Adult",
         isGivenByNirog: "",
         CreateUser: userName,
         UpdateUser: userName,

@@ -39,10 +39,11 @@ const TPuserData = () => {
   const userName = userData?.name; 
 
   const [patientGender, setPatientGender] = useState();
-  const [tbScreeningCough, setTbScreeingCough] = useState(0);
-  const [tbScreeningLGERF, setTbScreeingLGERF] = useState(0);
-  const [tbScreeningnightSweat, setTbScreeingnightSweat] = useState(0);
-  const [tbScreeningweightLoss, setTbScreeingweightLoss] = useState(0);
+  const [tbScreeningCough, setTbScreeingCough] = useState("");
+  const [tbScreeningLGERF, setTbScreeingLGERF] = useState("");
+  const [tbScreeningnightSweat, setTbScreeingnightSweat] = useState("");
+  const [tbScreeningweightLoss, setTbScreeingweightLoss] = useState("");
+  const [tbScreenHistory, setTbScreenHistory] = useState("");
 
   const { patient } = useSelector((state) => state.patients);
   // let patientGender = patient.gender.GenderCode;
@@ -91,10 +92,11 @@ const TPuserData = () => {
   const handleChangeTbScreening = (e) => {
     let myFormData = { ...formData };
 
-    myFormData.TBScreening[0] = {
+    myFormData.TBScreening.push({
       PatientId: PatientId,
-      AnemiaSeverityId:null,
-      AnemiaSeverity: 4323,
+      AnemiaSeverityId:null, 
+      Status: "",
+      AnemiaSeverity: tbScreenHistory, //sending history data to this field!
       coughGreaterThanMonth: tbScreeningCough,
       LGERF: tbScreeningLGERF,
       nightSweat: tbScreeningnightSweat,
@@ -102,7 +104,7 @@ const TPuserData = () => {
       CreateUser: userName,
       UpdateUser: userName,
       OrgId:"73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B"
-    };
+    });
 
     setFormData(myFormData);
     console.log(formData.TBScreening);
@@ -515,7 +517,7 @@ const TPuserData = () => {
                               name="option5"
                               id="no5"
                               value="no"
-                              onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e)=>{setTbScreenHistory(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
                               className="form-check-label text-capitalize"
@@ -531,7 +533,7 @@ const TPuserData = () => {
                               name="option5"
                               id="yes5"
                               value="yes"
-                              onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e)=>{setTbScreenHistory(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
                               className="form-check-label text-capitalize"

@@ -111,7 +111,11 @@ const PatientIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking1"
-                    value="no"
+                    value={item.SocialBehaviorCode === "Housing Mediation"
+                    ? "Catcha"
+                    : item.SocialBehaviorCode === "Drinking Water Sources"
+                    ? "Safe"
+                    : "No"}
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
@@ -138,7 +142,11 @@ const PatientIllness = ({ formData, setFormData }) => {
                     type="radio"
                     name={item.SocialBehaviorId}
                     id="smoking2"
-                    value="yes"
+                    value={item.SocialBehaviorCode === "Housing Mediation"
+                    ? "Paka"
+                    : item.SocialBehaviorCode === "Drinking Water Sources"
+                    ? "Unsafe"
+                    : "Yes"}
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
