@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
-const PatientIllness = () => {
+import { loggedInUserData } from "../../../helper/localStorageHelper";
+import { useSelector } from "react-redux";
+
+const PatientIllness = ({formData, setFormData}) => {
   const [isShown, setIsShown] = useState(false);
+  const [AdultVaccination, setAdultVaccination] = useState([]);
+  
+  const { patient } = useSelector((state) => state.patients);
+  const [PatientId] = useState(patient?.PatientId);
+  const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+  let myFormData = { ...formData };
+
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
 
   // AdultVaccination
-  const [AdultVaccination, setAdultVaccination] = useState([]);
   const getAdultVaccinationData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/adult-vaccination`);
@@ -23,6 +35,54 @@ const PatientIllness = () => {
   useEffect(() => {
     getAdultVaccinationData();
   }, []);
+
+    const handleChangeRadio = (illnessId, value) => {
+    const index = myFormData.AdultVaccination.findIndex(
+      (object) => object.illnessId === illnessId
+    );
+
+    if (index === -1) {
+      myFormData.AdultVaccination.push({
+        PatientId: PatientId,
+        vaccineId: illnessId,
+        otherVaccine: value,
+        isGivenByNirog: "",
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
+
+    if (index === 0) {
+      myFormData.AdultVaccination =
+        myFormData.AdultVaccination.filter((item) => {
+          if (item.illnessId == illnessId) {
+            item.Status = value;
+          }
+          return item;
+        });
+    }
+
+    setFormData(myFormData);
+    console.log(myFormData?.AdultVaccination);
+  };
+
+  const handleRemove = (illnessId) => {
+    myFormData.AdultVaccination.map((item)=>{
+      if(item.vaccineId === illnessId){
+        myFormData.AdultVaccination.pop(item);
+      }
+    });
+    setFormData(myFormData);
+  };
+
+  const handleChangeRadioTwo = (illnessId, value) => {
+    myFormData.AdultVaccination.map((item)=>{
+      if(item.vaccineId === illnessId){
+        item.isGivenByNirog = value;
+      }
+  })
+  };
 
   return (
     <>
@@ -47,8 +107,8 @@ const PatientIllness = () => {
               nirog team?
             </p>
           </div>
-          {AdultVaccination.map((item) => (
-            <div className="d-flex justify-content-between">
+          {AdultVaccination.map((item, i) => (
+            <div className="d-flex justify-content-between" key={i}>
               <div className="">
                 <p className="font-16">{item.VaccineCode}</p>
               </div>
@@ -59,10 +119,14 @@ const PatientIllness = () => {
                     type="radio"
                     name={item.VaccineId}
                     id="bcg1"
-                    value="option1"
+                    value="no"
+                    onChange={(e) =>
+                      handleChangeRadio(item.VaccineId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.VaccineId);
                     }}
                   />
                   <label
@@ -72,16 +136,21 @@ const PatientIllness = () => {
                     no
                   </label>
                 </div>
+
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
                     name={item.VaccineId}
                     id="bcg2"
-                    value="option2"
+                    value="yes"
+                    onChange={(e) =>
+                      handleChangeRadio(item.VaccineId, e.target.value)
+                    }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
                       e.target.value = null;
+                      handleRemove(item.VaccineId);
                     }}
                   />
                   <label
@@ -97,12 +166,14 @@ const PatientIllness = () => {
                     type="checkbox"
                     name="inputOptions"
                     id="inlineRadio2"
-                    value=""
+                    value="yes"
+                     onClick={(e)=>handleChangeRadioTwo(item.VaccineId, e.target.value)}
                   />
                   <label
                     className="form-check-label text-capitalize"
                     htmlFor="inlineRadio2"
-                  ></label>
+                  >
+                  </label>
                 </div>
               </div>
             </div>

@@ -92,7 +92,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
     }
     console.log(myFormData);
   };
-  console.log(medicineName);
+  // console.log(medicineName);
 
   return (
     <Modal

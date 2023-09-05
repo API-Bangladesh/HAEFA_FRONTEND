@@ -81,31 +81,11 @@ const TPuserData = () => {
     SystemicExamination: [],
     CurrentMedicationTaken: [],
     PatientMentalHealth: [],
-    ChildVaccination: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        vaccineId: "F20B756E-4480-4890-AD62-12C419418DC8",
-        otherVaccine: "test",
-        isGivenByNirog: "",
-        CreateUser: userName,
-        UpdateUser: "Nazmul1",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
-    AdultVaccination: [
-      {
-        PatientId: "C52C9718-8B90-4B44-9267-000011CE53A6",
-        vaccineId: "C008DE76-5D6C-4413-B4C2-F9B18867C7AE",
-        otherVaccine: "",
-        isGivenByNirog: "N",
-        CreateUser: userName,
-        UpdateUser: "Nazmul1",
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
+    ChildVaccination: [],
+    AdultVaccination: [],
   });
 
-   console.log(formData?.ChildVaccination);
+  //  console.log(formData?.ChildVaccination);
    
   //pushing tb-screening da.a
   const handleChangeTbScreening = (e) => {
@@ -352,7 +332,7 @@ const TPuserData = () => {
                               type="radio"
                               name="coughGreaterThanMonth" 
                               id="no1"
-                              value="0"
+                              value="no"
                               onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -372,7 +352,7 @@ const TPuserData = () => {
                               type="radio"
                               name="coughGreaterThanMonth"
                               id="yes1"
-                              value="1"
+                              value="yes"
                               onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -400,7 +380,7 @@ const TPuserData = () => {
                               type="radio"
                               name="LGERF"
                               id="no2"
-                              value="0"
+                              value="no"
                               onChange={(e)=>{setTbScreeingLGERF(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -420,7 +400,7 @@ const TPuserData = () => {
                               type="radio"
                               name="LGERF"
                               id="yes2"
-                              value="1"
+                              value="yes"
                               onChange={(e)=>{setTbScreeingLGERF(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -448,7 +428,7 @@ const TPuserData = () => {
                               type="radio"
                               name="nightSweat"
                               id="no3"
-                              value="0"
+                              value="no"
                               onChange={(e)=>{setTbScreeingnightSweat(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -468,7 +448,7 @@ const TPuserData = () => {
                               type="radio"
                               name="nightSweat"
                               id="yes3"
-                              value="1"
+                              value="yes"
                               onChange={(e)=>{setTbScreeingnightSweat(e.target.value); handleChangeTbScreening(e)}}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
@@ -495,7 +475,7 @@ const TPuserData = () => {
                               type="radio"
                               name="weightLoss"
                               id="no4"
-                              value="0"
+                              value="no"
                               onChange={(e)=>{setTbScreeingweightLoss(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
@@ -511,7 +491,7 @@ const TPuserData = () => {
                               type="radio"
                               name="weightLoss"
                               id="yes4"
-                              value="1"
+                              value="yes"
                               onChange={(e)=>{setTbScreeingweightLoss(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
@@ -534,7 +514,7 @@ const TPuserData = () => {
                               type="radio"
                               name="option5"
                               id="no5"
-                              value="0"
+                              value="no"
                               onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
@@ -550,7 +530,7 @@ const TPuserData = () => {
                               type="radio"
                               name="option5"
                               id="yes5"
-                              value="1"
+                              value="yes"
                               onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
                             />
                             <label
@@ -788,7 +768,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <ChildVaccination className="toggle-btn"/>
+                          <ChildVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
                         </div>
                       </div>
                     </Accordion.Body>
@@ -808,7 +788,7 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <AdultVaccination className="toggle-btn" />
+                          <AdultVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
                         </div>
                       </div>
                     </Accordion.Body>
