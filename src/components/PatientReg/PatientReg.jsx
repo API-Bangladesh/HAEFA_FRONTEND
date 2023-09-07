@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from 'react-select'
 import { BiError } from "react-icons/bi";
 import "./PatientReg.css";
 import SectionTitle from "../SectionTitleDemo/SectionTitle";
@@ -13,6 +14,7 @@ import {loggedInUserData} from "../../helper/localStorageHelper";
 
 const PatientReg = () => {
   const userData = loggedInUserData();
+  // console.log(userData)
   const userBarcode = userData.barcode_format.barcode_prefix
   // console.log(userBarcode);
   //genders
@@ -32,7 +34,7 @@ const PatientReg = () => {
     getHeadOfFamilyData();
     getMaritalStatusData();
     getDistrictData();
-    getUnionData();
+    // getUnionData();
   }, []);
 
   //selftype
@@ -61,18 +63,117 @@ const PatientReg = () => {
     }
   };
 
+  
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
+  const [unions, setUnions] = useState([]);
+
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedUpazila, setSelectedUpazila] = useState('');
+  const [selectedUnion, setSelectedUnion] = useState('');
+
   //district
   const [district, setDataDistrict] = useState([]);
   const getDistrictData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/district`);
       if (response.status === 200) {
-        setDataDistrict(response.data.District);
+        // setDistricts(response.data.District);
+        // console.log(response.data.District)
+
+        let reArrangeData =
+        response.data.District &&
+        response.data.District.map((d) => {
+						return {
+							label: d?.name,
+							value: d?.id,
+							...d,
+						};
+					});
+          setDistricts(reArrangeData);
+
+
+
       }
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleDistrictChange = async (e) => {
+    console.log(e.value)
+    // handleChange(e)
+    // setSelectedDistrict(e.target.value)
+    // setUpazilas([]) // not necessary
+    // setSelectedUpazila('')
+
+    // const fetchUpazilas = await fetch(`${API_URL}/ecom/upazilas/districts/${e.target.value}`)
+    // const upazilas = await fetchUpazilas.json()
+    // setUpazilas(upazilas)
+
+    try {
+      const response = await axios.get(`${API_URL}/api/upazilla`, {
+        params: {
+          district_id: e.value
+        }
+      });
+      // console.log(response)
+      // return
+      if (response.status === 200) {
+        // setUpazilas(response.data.Upazila);
+        let reArrangeData =
+        response.data.Upazila &&
+        response.data.Upazila.map((d) => {
+						return {
+							label: d?.name,
+							value: d?.id,
+							...d,
+						};
+					});
+          setUpazilas(reArrangeData);
+          console.log(reArrangeData)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleUpazilaChange = async (e) => {
+    console.log(e.target.value)
+    // handleChange(e)
+    // setSelectedDistrict(e.target.value)
+    // setUpazilas([]) // not necessary
+    // setSelectedUpazila('')
+
+    // const fetchUpazilas = await fetch(`${API_URL}/ecom/upazilas/districts/${e.target.value}`)
+    // const upazilas = await fetchUpazilas.json()
+    // setUpazilas(upazilas)
+
+    try {
+      const response = await axios.get(`${API_URL}/api/union`, {
+        params: {
+          upazilla_id: e.value
+        }
+      });
+      // console.log(response)
+      // return
+      if (response.status === 200) {
+        // setUnions(response.data.Union);
+        let reArrangeData =
+        response.data.Union &&
+        response.data.Union.map((d) => {
+						return {
+							label: d?.name,
+							value: d?.id,
+							...d,
+						};
+					});
+          setUnions(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
     //union
     const [union, setDataUnion] = useState([]);
@@ -88,9 +189,12 @@ const PatientReg = () => {
     };
 
     
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
+    console.log(e)
+    // return
     const { name, value } = e.target;
     const [section, field] = name.split(".");
+    console.log(section, field)
     setFormData((prevFormData) => ({
       ...prevFormData,
       [section]: {
@@ -612,27 +716,110 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                  Union
+                    District
                   </label>
-                  <select
-                    id="Select"
-                    name="addressInfo.Thana"
-                    value={formData.addressInfo.Thana}
+
+                  <Select 
+                    id="district"
+                    className="form-select form-radious inputBox"
+                    options={districts}
+                    name="addressInfo.District"
+                    value={formData.addressInfo.District}
+                    onChange={(e) => {
+                      handleInputChange(e)
+                      handleDistrictChange(e)
+                    }}
+                  />
+
+                  {/* <select
+                    id="district"
+                    name="addressInfo.District"
+                    value={formData.addressInfo.District}
+                    onChange={(e) => {
+                      handleInputChange(e)
+                      handleDistrictChange(e)
+                    }}
+                    className="form-select form-radious inputBox"
+                  >
+                    <option selected value="">
+                      -- Select --
+                    </option>
+                    {districts.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select> */}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                  Upazila
+                  </label>
+                  <Select 
+                    id="upazila"
+                    className="form-select form-radious inputBox"
+                    options={upazilas}
+                    name="addressInfo.Upazila"
+                    value={formData.addressInfo.Upazila}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      handleUpazilaChange(e);
+                    }}
+                  />
+                  
+
+
+                  {/* <select
+                    id="upazila"
+                    name="addressInfo.Upazila"
+                    value={formData.addressInfo.Upazila}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      handleUpazilaChange(e);
+                    }}
+                    className="form-select form-radious inputBox"
+                  >
+                    <option selected value="">
+                      -- Select --
+                    </option>
+                    {upazilas.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select> */}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    Union
+                  </label>
+                  <Select 
+                    id="union"
+                    className="form-control form-radious inputBox"
+                    options={unions}
+                    name="addressInfo.Union"
+                    value={formData.addressInfo.Union}
+                    onChange={handleInputChange}
+                  
+                  />
+                  {/* <select
+                    id="union"
+                    name="addressInfo.Union"
+                    value={formData.addressInfo.Union}
                     onChange={handleInputChange}
                     className="form-control form-radious inputBox"
                   >
-                    <option selected value="" disabled>
+                    <option selected value="">
                       Select
                     </option>
-                    {union.map((item) => (
-                      <option
-                        key={item.UnionName}
-                        value={item.UnionName}
-                      >
-                        {item.UnionName}
+                    {unions.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </div>
 
 
@@ -649,31 +836,6 @@ const PatientReg = () => {
                     placeholder="Ex: 1207"
                   />
                 </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    District
-                  </label>
-                  <select
-                    id="district"
-                    name="addressInfo.District"
-                    value={formData.addressInfo.District}
-                    onChange={handleInputChange}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {district.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.districtName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Sub-district */}
-
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
@@ -795,7 +957,7 @@ const PatientReg = () => {
                     </option>
                     {district.map((item) => (
                       <option key={item.id} value={item.id}>
-                        {item.districtName}
+                        {item.name}
                       </option>
                     ))}
                   </select>
