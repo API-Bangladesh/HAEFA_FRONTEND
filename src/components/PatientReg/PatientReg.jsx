@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from 'react-select'
 import { BiError } from "react-icons/bi";
 import "./PatientReg.css";
 import SectionTitle from "../SectionTitleDemo/SectionTitle";
@@ -13,6 +14,7 @@ import {loggedInUserData} from "../../helper/localStorageHelper";
 
 const PatientReg = () => {
   const userData = loggedInUserData();
+  // console.log(userData)
   const userBarcode = userData.barcode_format.barcode_prefix
   // console.log(userBarcode);
   //genders
@@ -27,12 +29,13 @@ const PatientReg = () => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     getGenderCodeData();
     getHeadOfFamilyData();
     getMaritalStatusData();
     getDistrictData();
-    getUnionData();
+    // getUnionData();
   }, []);
 
   //selftype
@@ -61,34 +64,236 @@ const PatientReg = () => {
     }
   };
 
+  
+  const [districts, setDistricts] = useState([]);
+  const [districtsParmanent, setDistrictsParmanent] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
+  const [upazilasParmanent, setUpazilasParmanent] = useState([]);
+  const [unions, setUnions] = useState([]);
+  const [unionsParmanent, setUnionsParmanent] = useState([]);
+
+  const [selectedAddress, setSelectedAddress] = useState({
+    District: '',
+    DistrictParmanent: '',
+    Thana: '',
+    ThanaParmanent: '',
+    Union: '',
+    UnionParmanent: ''
+  })
+
   //district
-  const [district, setDataDistrict] = useState([]);
   const getDistrictData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/district`);
       if (response.status === 200) {
-        setDataDistrict(response.data.District);
+        let reArrangeData =
+        response.data.District &&
+        response.data.District.map((d) => {
+          return {
+            id: d?.id,
+            name: "addressInfo.District",
+            label: d?.name,
+            value: d?.id,
+          }
+				});
+
+        let reArrangeDataParmanent =
+        response.data.District &&
+        response.data.District.map((d) => {
+          return {
+            id: d?.id,
+            name: "addressInfo.DistrictParmanent",
+            label: d?.name,
+            value: d?.id,
+          }
+				});
+
+        setDistricts(reArrangeData);
+        setDistrictsParmanent(reArrangeDataParmanent);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-    //union
-    const [union, setDataUnion] = useState([]);
-    const getUnionData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/union`);
-        if (response.status === 200) {
-          setDataUnion(response.data.unions);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const handleDistrictChange = async (e) => {
+    setUpazilas([]) // not necessary
+    setUnions([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        Thana: "",
+        Union: "",
+      },
+    }));
 
-    
-  const handleInputChange = (e) => {
+    setSelectedAddress((prev) => ({
+      ...prev,
+      Thana: '',
+      Union: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/upazilla`, {
+        params: {
+          district_id: e.value
+        }
+      });
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Upazila &&
+        response.data.Upazila.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.Thana",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUpazilas(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleDistrictParmanentChange = async (e) => {
+    setUpazilasParmanent([])
+    setUnionsParmanent([])
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        ThanaParmanent: "",
+        UnionParmanent: "",
+      },
+    }));
+
+    setSelectedAddress((prev) => ({
+      ...prev,
+      ThanaParmanent: '',
+      UnionParmanent: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/upazilla`, {
+        params: {
+          district_id: e.value
+        }
+      });
+
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Upazila &&
+        response.data.Upazila.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.ThanaParmanent",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUpazilasParmanent(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleUpazilaChange = async (e) => {
+    setUnions([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        Union: "",
+      },
+    }));
+
+    setSelectedAddress((prev) => ({
+      ...prev,
+      Union: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/union`, {
+        params: {
+          upazilla_id: e.value
+        }
+      });
+
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Union &&
+        response.data.Union.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.Union",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUnions(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleUpazilaParmanentChange = async (e) => {
+    setUnionsParmanent([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        UnionParmanent: "",
+      },
+    }));
+
+    setSelectedAddress((prev) => ({
+      ...prev,
+      UnionParmanent: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/union`, {
+        params: {
+          upazilla_id: e.value
+        }
+      });
+
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Union &&
+        response.data.Union.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.UnionParmanent",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUnionsParmanent(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // // union
+  // const getUnionData = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/api/union`);
+  //     if (response.status === 200) {
+  //       setDataUnion(response.data.unions);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+   
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
     const [section, field] = name.split(".");
     setFormData((prevFormData) => ({
@@ -98,6 +303,22 @@ const PatientReg = () => {
         [field]: value,
       },
     }));
+  };
+
+  const handleSelectInputChange = async (e) => {
+    const { name, value } = e;
+    const [section, field] = name.split(".");
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [section]: {
+        ...prevFormData[section],
+        [field]: value,
+      },
+    }));
+    setSelectedAddress((prev) => ({
+      ...prev,
+      [field]: e,
+    }))
   };
 
   const [formData, setFormData] = useState({
@@ -132,10 +353,14 @@ const PatientReg = () => {
       VillageParmanent: "",
       Thana: "",
       ThanaParmanent: "",
-      PostCode: "",
-      PostCodeParmanent: "",
       District: "",
       DistrictParmanent: "",
+      Upazila: "",
+      UpazilaParmanent: "",
+      Union: "",
+      UnionParmanent: "",
+      PostCode: "",
+      PostCodeParmanent: "",
       Country: "Bangladesh",
       CountryParmanent: "",
       Camp: "",
@@ -146,8 +371,6 @@ const PatientReg = () => {
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
     },
   });
-
-
 
   const [errors, setErrors] = useState({});
 
@@ -204,6 +427,8 @@ const PatientReg = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // console.log(formData)
+    // return
     try {
       // doValidation();
       const codeCheckResponse = await axios.post(
@@ -612,29 +837,48 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                  Union
+                    District
                   </label>
-                  <select
-                    id="Select"
-                    name="addressInfo.Thana"
-                    value={formData.addressInfo.Thana}
-                    onChange={handleInputChange}
-                    className="form-control form-radious inputBox"
-                  >
-                    <option selected value="" disabled>
-                      Select
-                    </option>
-                    {union.map((item) => (
-                      <option
-                        key={item.UnionName}
-                        value={item.UnionName}
-                      >
-                        {item.UnionName}
-                      </option>
-                    ))}
-                  </select>
+                  <Select 
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={districts}
+                    onChange={(e) => {
+                      handleSelectInputChange(e)
+                      handleDistrictChange(e)
+                    }}
+                    value={selectedAddress.District}
+                  />
                 </div>
 
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                  Upazila
+                  </label>
+                  <Select
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={upazilas}
+                    onChange={(e) => {
+                      handleSelectInputChange(e);
+                      handleUpazilaChange(e);
+                    }}
+                    value={selectedAddress.Thana}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    Union
+                  </label>
+                  <Select
+                    className="form-control form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={unions}
+                    onChange={handleSelectInputChange}
+                    value={selectedAddress.Union}
+                  />
+                </div>
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
@@ -649,31 +893,6 @@ const PatientReg = () => {
                     placeholder="Ex: 1207"
                   />
                 </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    District
-                  </label>
-                  <select
-                    id="district"
-                    name="addressInfo.District"
-                    value={formData.addressInfo.District}
-                    onChange={handleInputChange}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {district.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.districtName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Sub-district */}
-
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
@@ -739,8 +958,53 @@ const PatientReg = () => {
                     placeholder="Type here"
                   />
                 </div> */}
-                
+
                 <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    District
+                  </label>
+                  <Select 
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={districtsParmanent}
+                    onChange={(e) => {
+                      handleSelectInputChange(e)
+                      handleDistrictParmanentChange(e)
+                    }}
+                    value={selectedAddress.DistrictParmanent}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                  Upazila
+                  </label>
+                  <Select
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={upazilasParmanent}
+                    onChange={(e) => {
+                      handleSelectInputChange(e);
+                      handleUpazilaParmanentChange(e);
+                    }}
+                    value={selectedAddress.ThanaParmanent}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    Union
+                  </label>
+                  <Select 
+                    className="form-control form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={unionsParmanent}
+                    onChange={handleSelectInputChange}
+                    value={selectedAddress.UnionParmanent}
+                  />
+                </div>
+
+                {/* <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                   Union
                   </label>
@@ -763,7 +1027,7 @@ const PatientReg = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
 
 
                 <div className="mb-3">
@@ -778,27 +1042,6 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Ex: 1207"
                   />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    District
-                  </label>
-                  <select
-                    name="addressInfo.DistrictParmanent"
-                    value={formData.addressInfo.DistrictParmanent}
-                    onChange={handleInputChange}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {district.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.districtName}
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 <div className="mb-3">

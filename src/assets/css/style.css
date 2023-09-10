@@ -490,3 +490,27 @@ div:where(.swal2-icon) {
     opacity: 0!important;
   }
 }
+
+/* custom css */
+.c-select {
+  padding: 0 !important;
+}
+.select__control {
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  padding: 13px 20px !important;
+  font-size: 14px;
+}
+.select__value-container,
+.select__input-container,
+.select__indicator,
+.select__single-value {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.select__indicator-separator {
+  display: none !important;
+}
