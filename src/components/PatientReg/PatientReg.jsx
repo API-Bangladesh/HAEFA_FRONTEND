@@ -29,6 +29,7 @@ const PatientReg = () => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     getGenderCodeData();
     getHeadOfFamilyData();
@@ -65,35 +66,50 @@ const PatientReg = () => {
 
   
   const [districts, setDistricts] = useState([]);
+  const [districtsParmanent, setDistrictsParmanent] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
+  const [upazilasParmanent, setUpazilasParmanent] = useState([]);
   const [unions, setUnions] = useState([]);
+  const [unionsParmanent, setUnionsParmanent] = useState([]);
 
-  const [selectedDistrict, setSelectedDistrict] = useState('');
-  const [selectedUpazila, setSelectedUpazila] = useState('');
-  const [selectedUnion, setSelectedUnion] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState({
+    District: '',
+    DistrictParmanent: '',
+    Thana: '',
+    ThanaParmanent: '',
+    Union: '',
+    UnionParmanent: ''
+  })
 
   //district
-  const [district, setDataDistrict] = useState([]);
   const getDistrictData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/district`);
       if (response.status === 200) {
-        // setDistricts(response.data.District);
-        // console.log(response.data.District)
-
         let reArrangeData =
         response.data.District &&
         response.data.District.map((d) => {
-						return {
-							label: d?.name,
-							value: d?.id,
-							...d,
-						};
-					});
-          setDistricts(reArrangeData);
+          return {
+            id: d?.id,
+            name: "addressInfo.District",
+            label: d?.name,
+            value: d?.id,
+          }
+				});
 
+        let reArrangeDataParmanent =
+        response.data.District &&
+        response.data.District.map((d) => {
+          return {
+            id: d?.id,
+            name: "addressInfo.DistrictParmanent",
+            label: d?.name,
+            value: d?.id,
+          }
+				});
 
-
+        setDistricts(reArrangeData);
+        setDistrictsParmanent(reArrangeDataParmanent);
       }
     } catch (error) {
       console.error(error);
@@ -101,15 +117,22 @@ const PatientReg = () => {
   };
 
   const handleDistrictChange = async (e) => {
-    console.log(e.value)
-    // handleChange(e)
-    // setSelectedDistrict(e.target.value)
-    // setUpazilas([]) // not necessary
-    // setSelectedUpazila('')
+    setUpazilas([]) // not necessary
+    setUnions([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        Thana: "",
+        Union: "",
+      },
+    }));
 
-    // const fetchUpazilas = await fetch(`${API_URL}/ecom/upazilas/districts/${e.target.value}`)
-    // const upazilas = await fetchUpazilas.json()
-    // setUpazilas(upazilas)
+    setSelectedAddress((prev) => ({
+      ...prev,
+      Thana: '',
+      Union: '',
+    }))
 
     try {
       const response = await axios.get(`${API_URL}/api/upazilla`, {
@@ -117,21 +140,61 @@ const PatientReg = () => {
           district_id: e.value
         }
       });
-      // console.log(response)
-      // return
       if (response.status === 200) {
-        // setUpazilas(response.data.Upazila);
         let reArrangeData =
         response.data.Upazila &&
         response.data.Upazila.map((d) => {
 						return {
+              id: d?.id,
+              name: "addressInfo.Thana",
 							label: d?.name,
 							value: d?.id,
-							...d,
 						};
 					});
           setUpazilas(reArrangeData);
-          console.log(reArrangeData)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleDistrictParmanentChange = async (e) => {
+    setUpazilasParmanent([])
+    setUnionsParmanent([])
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        ThanaParmanent: "",
+        UnionParmanent: "",
+      },
+    }));
+
+    setSelectedAddress((prev) => ({
+      ...prev,
+      ThanaParmanent: '',
+      UnionParmanent: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/upazilla`, {
+        params: {
+          district_id: e.value
+        }
+      });
+
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Upazila &&
+        response.data.Upazila.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.ThanaParmanent",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUpazilasParmanent(reArrangeData);
       }
     } catch (error) {
       console.error(error);
@@ -139,15 +202,19 @@ const PatientReg = () => {
   }
 
   const handleUpazilaChange = async (e) => {
-    console.log(e.target.value)
-    // handleChange(e)
-    // setSelectedDistrict(e.target.value)
-    // setUpazilas([]) // not necessary
-    // setSelectedUpazila('')
+    setUnions([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        Union: "",
+      },
+    }));
 
-    // const fetchUpazilas = await fetch(`${API_URL}/ecom/upazilas/districts/${e.target.value}`)
-    // const upazilas = await fetchUpazilas.json()
-    // setUpazilas(upazilas)
+    setSelectedAddress((prev) => ({
+      ...prev,
+      Union: '',
+    }))
 
     try {
       const response = await axios.get(`${API_URL}/api/union`, {
@@ -155,17 +222,16 @@ const PatientReg = () => {
           upazilla_id: e.value
         }
       });
-      // console.log(response)
-      // return
+
       if (response.status === 200) {
-        // setUnions(response.data.Union);
         let reArrangeData =
         response.data.Union &&
         response.data.Union.map((d) => {
 						return {
+              id: d?.id,
+              name: "addressInfo.Union",
 							label: d?.name,
 							value: d?.id,
-							...d,
 						};
 					});
           setUnions(reArrangeData);
@@ -175,26 +241,61 @@ const PatientReg = () => {
     }
   }
 
-    //union
-    const [union, setDataUnion] = useState([]);
-    const getUnionData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/union`);
-        if (response.status === 200) {
-          setDataUnion(response.data.unions);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const handleUpazilaParmanentChange = async (e) => {
+    setUnionsParmanent([]) // not necessary
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addressInfo: {
+        ...prevFormData.addressInfo,
+        UnionParmanent: "",
+      },
+    }));
 
-    
+    setSelectedAddress((prev) => ({
+      ...prev,
+      UnionParmanent: '',
+    }))
+
+    try {
+      const response = await axios.get(`${API_URL}/api/union`, {
+        params: {
+          upazilla_id: e.value
+        }
+      });
+
+      if (response.status === 200) {
+        let reArrangeData =
+        response.data.Union &&
+        response.data.Union.map((d) => {
+						return {
+              id: d?.id,
+              name: "addressInfo.UnionParmanent",
+							label: d?.name,
+							value: d?.id,
+						};
+					});
+          setUnionsParmanent(reArrangeData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // // union
+  // const getUnionData = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/api/union`);
+  //     if (response.status === 200) {
+  //       setDataUnion(response.data.unions);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+   
   const handleInputChange = async (e) => {
-    console.log(e)
-    // return
     const { name, value } = e.target;
     const [section, field] = name.split(".");
-    console.log(section, field)
     setFormData((prevFormData) => ({
       ...prevFormData,
       [section]: {
@@ -202,6 +303,22 @@ const PatientReg = () => {
         [field]: value,
       },
     }));
+  };
+
+  const handleSelectInputChange = async (e) => {
+    const { name, value } = e;
+    const [section, field] = name.split(".");
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [section]: {
+        ...prevFormData[section],
+        [field]: value,
+      },
+    }));
+    setSelectedAddress((prev) => ({
+      ...prev,
+      [field]: e,
+    }))
   };
 
   const [formData, setFormData] = useState({
@@ -236,10 +353,14 @@ const PatientReg = () => {
       VillageParmanent: "",
       Thana: "",
       ThanaParmanent: "",
-      PostCode: "",
-      PostCodeParmanent: "",
       District: "",
       DistrictParmanent: "",
+      Upazila: "",
+      UpazilaParmanent: "",
+      Union: "",
+      UnionParmanent: "",
+      PostCode: "",
+      PostCodeParmanent: "",
       Country: "Bangladesh",
       CountryParmanent: "",
       Camp: "",
@@ -250,8 +371,6 @@ const PatientReg = () => {
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
     },
   });
-
-
 
   const [errors, setErrors] = useState({});
 
@@ -308,6 +427,8 @@ const PatientReg = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // console.log(formData)
+    // return
     try {
       // doValidation();
       const codeCheckResponse = await axios.post(
@@ -718,110 +839,46 @@ const PatientReg = () => {
                   <label htmlFor="" className="form-label text-capitalize">
                     District
                   </label>
-
                   <Select 
-                    id="district"
-                    className="form-select form-radious inputBox"
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
                     options={districts}
-                    name="addressInfo.District"
-                    value={formData.addressInfo.District}
                     onChange={(e) => {
-                      handleInputChange(e)
+                      handleSelectInputChange(e)
                       handleDistrictChange(e)
                     }}
+                    value={selectedAddress.District}
                   />
-
-                  {/* <select
-                    id="district"
-                    name="addressInfo.District"
-                    value={formData.addressInfo.District}
-                    onChange={(e) => {
-                      handleInputChange(e)
-                      handleDistrictChange(e)
-                    }}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {districts.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select> */}
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                   Upazila
                   </label>
-                  <Select 
-                    id="upazila"
-                    className="form-select form-radious inputBox"
+                  <Select
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
                     options={upazilas}
-                    name="addressInfo.Upazila"
-                    value={formData.addressInfo.Upazila}
                     onChange={(e) => {
-                      handleInputChange(e);
+                      handleSelectInputChange(e);
                       handleUpazilaChange(e);
                     }}
+                    value={selectedAddress.Thana}
                   />
-                  
-
-
-                  {/* <select
-                    id="upazila"
-                    name="addressInfo.Upazila"
-                    value={formData.addressInfo.Upazila}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      handleUpazilaChange(e);
-                    }}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {upazilas.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select> */}
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                     Union
                   </label>
-                  <Select 
-                    id="union"
-                    className="form-control form-radious inputBox"
+                  <Select
+                    className="form-control form-radious inputBox c-select"
+                    classNamePrefix="select"
                     options={unions}
-                    name="addressInfo.Union"
-                    value={formData.addressInfo.Union}
-                    onChange={handleInputChange}
-                  
+                    onChange={handleSelectInputChange}
+                    value={selectedAddress.Union}
                   />
-                  {/* <select
-                    id="union"
-                    name="addressInfo.Union"
-                    value={formData.addressInfo.Union}
-                    onChange={handleInputChange}
-                    className="form-control form-radious inputBox"
-                  >
-                    <option selected value="">
-                      Select
-                    </option>
-                    {unions.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select> */}
                 </div>
-
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
@@ -901,8 +958,53 @@ const PatientReg = () => {
                     placeholder="Type here"
                   />
                 </div> */}
-                
+
                 <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    District
+                  </label>
+                  <Select 
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={districtsParmanent}
+                    onChange={(e) => {
+                      handleSelectInputChange(e)
+                      handleDistrictParmanentChange(e)
+                    }}
+                    value={selectedAddress.DistrictParmanent}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                  Upazila
+                  </label>
+                  <Select
+                    className="form-select form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={upazilasParmanent}
+                    onChange={(e) => {
+                      handleSelectInputChange(e);
+                      handleUpazilaParmanentChange(e);
+                    }}
+                    value={selectedAddress.ThanaParmanent}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label text-capitalize">
+                    Union
+                  </label>
+                  <Select 
+                    className="form-control form-radious inputBox c-select"
+                    classNamePrefix="select"
+                    options={unionsParmanent}
+                    onChange={handleSelectInputChange}
+                    value={selectedAddress.UnionParmanent}
+                  />
+                </div>
+
+                {/* <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                   Union
                   </label>
@@ -925,7 +1027,7 @@ const PatientReg = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
 
 
                 <div className="mb-3">
@@ -940,27 +1042,6 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Ex: 1207"
                   />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    District
-                  </label>
-                  <select
-                    name="addressInfo.DistrictParmanent"
-                    value={formData.addressInfo.DistrictParmanent}
-                    onChange={handleInputChange}
-                    className="form-select form-radious inputBox"
-                  >
-                    <option selected value="">
-                      -- Select --
-                    </option>
-                    {district.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 <div className="mb-3">
