@@ -38,7 +38,7 @@ const DashboardPage = () => {
                       <b>Health Code :</b> <span>{userData?.barcode_format.barcode_prefix}</span>
                     </p>
                     <p className="me-3 mb-0">
-                      <b>Address :</b> <span>{userData?.barcode_format.district.districtName}, {userData?.barcode_format.upazila.UpazilaName}, {userData?.barcode_format.union.UnionName}</span>
+                      <b>Address :</b> <span>{userData?.barcode_format.union.name}, {userData?.barcode_format.upazila.name}, {userData?.barcode_format.district.name}</span>
                     </p>
                   </div>
                 </div>
