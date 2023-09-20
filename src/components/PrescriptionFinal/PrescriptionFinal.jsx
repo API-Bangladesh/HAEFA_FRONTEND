@@ -101,6 +101,12 @@ const PrescriptionFinal = () => {
   }
 
   const handlePrint = () => {
+    // const content = document.querySelector('#printable');
+    // const a4PageHeight = 842; // Height of one A4 page in points
+    // const contentHeight = content.clientHeight;
+    // const pageCount = Math.ceil(contentHeight / a4PageHeight);
+    // // Set the height with units in CSS
+    // content.style.height = `${pageCount * a4PageHeight}px`;
     window.print();
   };
   // console.log(advices);
@@ -112,7 +118,7 @@ const PrescriptionFinal = () => {
   return ( 
     <>
       <section id="prescriptionFinal">
-        <div className="container px-4">
+        <div id="printable" className="container px-4">
           <header className="header">
             <p className="mb-0 pt-2 fs-">
               <b>Location :</b>{" "}
@@ -163,31 +169,31 @@ const PrescriptionFinal = () => {
 
           <div className="d-flex">
             <aside className="aside">
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">Complaints</b>
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">Complaints</b>
                 {chiefComplaints.map((item, index) => (
-                  <p className="mb-0 mt-2 pe-2" key={index}>
-                    {item.CreateDate}:{item.ChiefComplain} 
-                    [{item.OtherCC}] for{" "}
+                  <p className="mb-0 mt-1 pe-2 font-13" key={index}>
+                    {item.CreateDate} : {item.ChiefComplain} 
+                    {item?.OtherCC && `[${item.OtherCC}] for `} {" "}
                     {item.CCDurationValue} {item.DurationInEnglish}
                   </p>
                 ))}
               </div>
 
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">O/E</b>
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">O/E</b>
                 {heightWeights.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">Height: {item.Height} cm</p>
-                    <p className="mb-0 mt-2 pe-2">Weight: {item.Weight} kg</p>
-                    <p className="mb-0 mt-2 pe-2">BMI: {item.BMI}</p>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">Height: {item.Height} cm</p>
+                    <p className="mb-0 mt-1 pe-2">Weight: {item.Weight} kg</p>
+                    <p className="mb-0 mt-1 pe-2">BMI: {item.BMI}</p>
                   </div>
                 ))}
 
                 {bps.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">Pulse: {item.HeartRate} beat/min</p>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">Pulse: {item.HeartRate} beat/min</p>
+                    <p className="mb-0 mt-1 pe-2">
                       Blood Pressure: {item.BPSystolic1} / {item.BPDiastolic1}{" "}
                       mmHg
                     </p>
@@ -195,24 +201,24 @@ const PrescriptionFinal = () => {
                 ))}
 
                 {glucoseHbs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">RBS: {item.RBG} mMol</p>
-                    <p className="mb-0 mt-2 pe-2">FBS: {item.FBG} mMol</p>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">RBS: {item.RBG} mMol</p>
+                    <p className="mb-0 mt-1 pe-2">FBS: {item.FBG} mMol</p>
+                    <p className="mb-0 mt-1 pe-2">
                       Hemoglobin: {item.Hemoglobin} g/dL{" "}
                     </p>
                   </div>
                 ))}
               </div>
 
-              {/* <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+              {/* <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Provisional Dx
                 </b>
                 {provisionalDXs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
                     <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}:{" "}
                       {item.ProvisionalDiagnosis != ""
                         ? item.ProvisionalDiagnosis
@@ -226,14 +232,14 @@ const PrescriptionFinal = () => {
                   </div>
                 ))}
               </div> */}
-               <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+               <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Provisional Dx
                 </b>
                 {provisionalDXs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
                     <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}: {item.ProvisionalDiagnosis}
                       {""} [{item.OtherProvisionalDiagnosis}]{" "}
                       {item.DiagnosisStatus == "N"
@@ -246,14 +252,14 @@ const PrescriptionFinal = () => {
                 ))}
               </div>
 
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Lab Invenstigations
                 </b>
                 {labInvestigations.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
                     <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}:{" "}
                       {item.Investigation }{""}
                         [{item.OtherInvestigation}]{" "}
@@ -295,9 +301,9 @@ const PrescriptionFinal = () => {
                 </div>
               ))} */}
                {rxDetails.map((item, index) => (
-                <div className="medicine mb-4" key={index}>
-                  <p className="mb-0">
-                    <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}({item.DrugDose})
+                <div className="medicine mb-1" key={index}>
+                  <p className="mb-0 font-13">
+                    <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}{item?.DrugDose && `(${item.DrugDose})`}
                     <br></br>
                     {item.OtherDrug} &nbsp; {item.Frequency} &nbsp;{" "}
                     {item.InstructionInBangla} &nbsp; - &nbsp;
@@ -315,12 +321,12 @@ const PrescriptionFinal = () => {
                       ? item.DrugDurationValue.replace(/week/i, " সপ্তাহ")
                       : ""}
                   </p> 
-                  <p>{}</p>
+                  {/* <p>{}</p> */}
                 </div>
               ))}
 
               <div className="nextinfo">
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Follow-up / পরবর্তী সাক্ষাৎ</b>
                   </p>
@@ -340,7 +346,7 @@ const PrescriptionFinal = () => {
                   ))}
                 </div>
 
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Advice / পরামর্শ</b>
                   </p>
@@ -354,7 +360,7 @@ const PrescriptionFinal = () => {
                   ))}
                 </div>
 
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Referral / রেফারেল</b>
                   </p>
@@ -417,7 +423,7 @@ const PrescriptionFinal = () => {
         </div>
       </section>
 
-      <div className="export container bg-light mt-3 p-3 d-flex justify-content-end">
+      <div className="export container bg-light mt-3 p-3 d-flex justify-content-end no-print">
         {/* <div className="prinBtns2">
             <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Instructions</Tooltip>} >
               <Button className="me-2  bg-dark border-0">

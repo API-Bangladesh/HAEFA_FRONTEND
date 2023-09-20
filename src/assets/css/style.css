@@ -529,13 +529,6 @@ div:where(.swal2-icon) {
   border: 2px solid red !important;
 }
 
-
-@media print {
-  .testPrint {
-    opacity: 0!important;
-  }
-}
-
 /* custom css */
 .c-select {
   padding: 0 !important;
@@ -558,4 +551,43 @@ div:where(.swal2-icon) {
 }
 .select__indicator-separator {
   display: none !important;
+}
+
+.camera-button {
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  bottom: 72px;
+  transform: translateX(-50%);
+  color: #fff;
+}
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  #printable {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    min-height: 842px;
+    position: relative;
+  }
+  /* .printFooter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  } */
+  #globalButton, .no-print, .prinBtns, #tooltip-disabled {
+    display: none !important;
+  }
+  /* .signatureBox {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  } */
 }

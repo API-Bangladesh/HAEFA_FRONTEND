@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import SectionBanner from "../SectionBannerDemo/SectionBanner";
 import "./Camera.css";
 import { useLocation } from "react-router";
+import {RiCameraSwitchFill, RiCameraSwitchLine} from "react-icons/ri"
 
 const Camera = () => {
   const webcamRef = React.useRef(null);
@@ -31,10 +32,33 @@ const Camera = () => {
     window.location.href = `/user-details?PatientId=${PatientId}`;
   };
 
-  const videoConstraints = {
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isMobile =/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    const isTablet = /ipad|tablet/i.test(userAgent);
+    const desktop = !(isMobile || isTablet);
+    setIsDesktop(desktop)
+  }, [])
+
+  const [videoConstraints, setVideoConstraints] = useState({
     width: 1280,
     height: 800,
     facingMode: "user",
+  });
+
+  const changeCameraMode = () => {
+    let mode = '';
+    if (videoConstraints.facingMode === "user") {
+      mode = 'environment';
+    } else {
+      mode = "user"
+    }
+    setVideoConstraints({
+      ...videoConstraints,
+      facingMode: mode
+    })
   };
 
   return (
@@ -43,7 +67,7 @@ const Camera = () => {
       <section id="cameraOn" className="container">
           {
             show ? 
-            <div className="text-center">
+            <div className="text-center position-relative">
               <Webcam
                mirrored={true}
                audio={false}
@@ -56,7 +80,18 @@ const Camera = () => {
                console.log(error);
               }}
               />
-              <div className="text-center mt-3 position-relative mb-2">
+
+              {webcamRef && isDesktop && (
+                <span
+                  className="ms-2 camera-button"
+                  onClick={() => changeCameraMode()}
+                >
+                {videoConstraints.facingMode === "user" && <RiCameraSwitchFill />}
+                {videoConstraints.facingMode === "environment" && <RiCameraSwitchLine />}
+                </span>
+              )}
+
+              <div className="text-center mt-3 position-relative mb-2 d-flex justify-content-center align-items-center">
                 <button
                   type="button"
                   onClick={capture}
