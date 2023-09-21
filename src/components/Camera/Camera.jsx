@@ -81,7 +81,7 @@ const Camera = () => {
               }}
               />
 
-              {webcamRef && isDesktop && (
+              {webcamRef && !isDesktop && (
                 <span
                   className="ms-2 camera-button"
                   onClick={() => changeCameraMode()}
