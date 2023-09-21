@@ -562,32 +562,3 @@ div:where(.swal2-icon) {
   transform: translateX(-50%);
   color: #fff;
 }
-
-@media print {
-  body {
-    margin: 0;
-    padding: 0;
-    background: #fff;
-  }
-  #printable {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    min-height: 842px;
-    position: relative;
-  }
-  /* .printFooter {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  } */
-  #globalButton, .no-print, .prinBtns, #tooltip-disabled {
-    display: none !important;
-  }
-  /* .signatureBox {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  } */
-}

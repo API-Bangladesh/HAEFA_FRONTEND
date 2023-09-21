@@ -120,14 +120,18 @@ const PrescriptionFinal = () => {
       <section id="prescriptionFinal">
         <div id="printable" className="container px-4">
           <header className="header">
-            <p className="mb-0 pt-2 fs-">
+            <h4 className="mb-0 pt-2">
               <b>Location :</b>{" "}
-              {userData?.barcode_format.healthcenter.HealthCenterName} ,{" "}
-              {userData?.barcode_format.barcode_prefix} ,{" "}
-              {userData?.barcode_format.district.districtName} ,{" "}
-              {userData?.barcode_format.union.UnionName} ,{" "}
-              {userData?.barcode_format.upazila.UpazilaName}
-            </p>
+              {[
+                userData?.barcode_format?.healthcenter?.HealthCenterName,
+                userData?.barcode_format?.barcode_prefix,
+                userData?.barcode_format?.district?.districtName,
+                userData?.barcode_format?.union?.UnionName,
+                userData?.barcode_format?.upazila?.UpazilaName,
+              ]
+              .filter((item) => item) // Remove undefined or falsy items
+              .join(', ')}
+            </h4>
             {prescriptions.map((item, index) => (
               <div key={index}>
                 <h3 className="text-center m-0 py-4 px-4">
@@ -238,7 +242,7 @@ const PrescriptionFinal = () => {
                 </b>
                 {provisionalDXs.map((item, index) => (
                   <div className="mb-0 mt-1 pe-2" key={index}>
-                    <b>Date: {item.CreateDate}</b>
+                    <p className="mb-0">Date: {item.CreateDate}</p>
                     <p className="mb-0 mt-1 pe-2">
                       {index + 1}: {item.ProvisionalDiagnosis}
                       {""} [{item.OtherProvisionalDiagnosis}]{" "}
@@ -258,7 +262,7 @@ const PrescriptionFinal = () => {
                 </b>
                 {labInvestigations.map((item, index) => (
                   <div className="mb-0 mt-1 pe-2" key={index}>
-                    <b>Date: {item.CreateDate}</b>
+                    <p className="mb-0">Date: {item.CreateDate}</p>
                     <p className="mb-0 mt-1 pe-2">
                       {index + 1}:{" "}
                       {item.Investigation }{""}
@@ -274,7 +278,7 @@ const PrescriptionFinal = () => {
             </aside>
 
             <div className="rightSide position-relative w-100 py-3 px-4">
-              <h2 className="mb-4">&#8478;</h2>
+              <h2 className="mb-2">&#8478;</h2>
 
               {/* {rxDetails.map((item, index) => (
                 <div className="medicine mb-4" key={index}>
@@ -301,10 +305,10 @@ const PrescriptionFinal = () => {
                 </div>
               ))} */}
                {rxDetails.map((item, index) => (
-                <div className="medicine mb-1" key={index}>
+                <div className="medicine mb-0" key={index}>
                   <p className="mb-0 font-13">
                     <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}{item?.DrugDose && `(${item.DrugDose})`}
-                    <br></br>
+
                     {item.OtherDrug} &nbsp; {item.Frequency} &nbsp;{" "}
                     {item.InstructionInBangla} &nbsp; - &nbsp;
                     {item.DrugDurationValue.includes("Day") ||
@@ -374,12 +378,6 @@ const PrescriptionFinal = () => {
                   ))}
                 </div>
               </div>
-
-              <div className="signatureBox text-center">
-                <img src={Signature} alt="img" className="signatureImage" />
-                <p className="mb-0">{userData?.name}</p>
-                <i className="my-0">{userData?.employee.FirstName}</i>
-              </div>
             </div>
           </div>
 
@@ -402,24 +400,32 @@ const PrescriptionFinal = () => {
             ))}
           </div> */}
 
-          <footer className="footer d-flex justify-content-between">
-            <address className="mb-0">
-              <p className="mb-0">Haefa USA</p>
-              <p className="mb-0">311 Bedford St, Lexington MA 07420, USA</p>
-              <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-              <p className="mb-0">Website: www.healthonwheels.usa.org</p>
-            </address>
-            <address className="mb-0">
-              <p className="mb-0">Haefa Bangladesh</p>
-              <p className="mb-0">House: 31, Road: 16 Sector: 13 Uttara</p>
-              <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-              <p className="mb-0">Website: www.healthonwheels.usa.org</p>
-            </address>
-          </footer>
-          <p className="mb-0 text-center pb-4 logoText">
-            Powered By:
-            <img src={ApiLogo} alt="img" className="apiLogo" />
-          </p>
+          <div id="footer" className="">
+            <div className="signatureBox text-center">
+              <img src={Signature} alt="img" className="signatureImage" />
+              <p className="mb-0">{userData?.name}</p>
+              <i className="my-0">{userData?.employee.FirstName}</i>
+            </div>
+            <footer className="footer d-flex justify-content-between">
+            
+              <address className="mb-0">
+                <p className="mb-0">Haefa USA</p>
+                <p className="mb-0">311 Bedford St, Lexington MA 07420, USA</p>
+                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
+                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+              </address>
+              <address className="mb-0">
+                <p className="mb-0">Haefa Bangladesh</p>
+                <p className="mb-0">House: 31, Road: 16 Sector: 13 Uttara</p>
+                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
+                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+              </address>
+            </footer>
+            <p className="mb-0 text-center pb-4 logoText">
+              Powered By:
+              <img src={ApiLogo} alt="img" className="apiLogo" />
+            </p>
+          </div>
         </div>
       </section>
 
