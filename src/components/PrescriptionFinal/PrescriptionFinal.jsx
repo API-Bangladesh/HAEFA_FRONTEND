@@ -101,6 +101,12 @@ const PrescriptionFinal = () => {
   }
 
   const handlePrint = () => {
+    // const content = document.querySelector('#printable');
+    // const a4PageHeight = 842; // Height of one A4 page in points
+    // const contentHeight = content.clientHeight;
+    // const pageCount = Math.ceil(contentHeight / a4PageHeight);
+    // // Set the height with units in CSS
+    // content.style.height = `${pageCount * a4PageHeight}px`;
     window.print();
   };
   // console.log(advices);
@@ -112,16 +118,20 @@ const PrescriptionFinal = () => {
   return ( 
     <>
       <section id="prescriptionFinal">
-        <div className="container px-4">
+        <div id="printable" className="container px-4">
           <header className="header">
-            <p className="mb-0 pt-2 fs-">
+            <h4 className="mb-0 pt-2">
               <b>Location :</b>{" "}
-              {userData?.barcode_format.healthcenter.HealthCenterName} ,{" "}
-              {userData?.barcode_format.barcode_prefix} ,{" "}
-              {userData?.barcode_format.district.districtName} ,{" "}
-              {userData?.barcode_format.union.UnionName} ,{" "}
-              {userData?.barcode_format.upazila.UpazilaName}
-            </p>
+              {[
+                userData?.barcode_format?.healthcenter?.HealthCenterName,
+                userData?.barcode_format?.barcode_prefix,
+                userData?.barcode_format?.district?.districtName,
+                userData?.barcode_format?.union?.UnionName,
+                userData?.barcode_format?.upazila?.UpazilaName,
+              ]
+              .filter((item) => item) // Remove undefined or falsy items
+              .join(', ')}
+            </h4>
             {prescriptions.map((item, index) => (
               <div key={index}>
                 <h3 className="text-center m-0 py-4 px-4">
@@ -163,31 +173,31 @@ const PrescriptionFinal = () => {
 
           <div className="d-flex">
             <aside className="aside">
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">Complaints</b>
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">Complaints</b>
                 {chiefComplaints.map((item, index) => (
-                  <p className="mb-0 mt-2 pe-2" key={index}>
-                    {item.CreateDate}:{item.ChiefComplain} 
-                    [{item.OtherCC}] for{" "}
+                  <p className="mb-0 mt-1 pe-2 font-13" key={index}>
+                    {item.CreateDate} : {item.ChiefComplain} 
+                    {item?.OtherCC && `[${item.OtherCC}] for `} {" "}
                     {item.CCDurationValue} {item.DurationInEnglish}
                   </p>
                 ))}
               </div>
 
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">O/E</b>
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">O/E</b>
                 {heightWeights.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">Height: {item.Height} cm</p>
-                    <p className="mb-0 mt-2 pe-2">Weight: {item.Weight} kg</p>
-                    <p className="mb-0 mt-2 pe-2">BMI: {item.BMI}</p>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">Height: {item.Height} cm</p>
+                    <p className="mb-0 mt-1 pe-2">Weight: {item.Weight} kg</p>
+                    <p className="mb-0 mt-1 pe-2">BMI: {item.BMI}</p>
                   </div>
                 ))}
 
                 {bps.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">Pulse: {item.HeartRate} beat/min</p>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">Pulse: {item.HeartRate} beat/min</p>
+                    <p className="mb-0 mt-1 pe-2">
                       Blood Pressure: {item.BPSystolic1} / {item.BPDiastolic1}{" "}
                       mmHg
                     </p>
@@ -195,24 +205,24 @@ const PrescriptionFinal = () => {
                 ))}
 
                 {glucoseHbs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <p className="mb-0 mt-2 pe-2">RBS: {item.RBG} mMol</p>
-                    <p className="mb-0 mt-2 pe-2">FBS: {item.FBG} mMol</p>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">RBS: {item.RBG} mMol</p>
+                    <p className="mb-0 mt-1 pe-2">FBS: {item.FBG} mMol</p>
+                    <p className="mb-0 mt-1 pe-2">
                       Hemoglobin: {item.Hemoglobin} g/dL{" "}
                     </p>
                   </div>
                 ))}
               </div>
 
-              {/* <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+              {/* <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Provisional Dx
                 </b>
                 {provisionalDXs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
+                  <div className="mb-0 mt-1 pe-2" key={index}>
                     <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}:{" "}
                       {item.ProvisionalDiagnosis != ""
                         ? item.ProvisionalDiagnosis
@@ -226,14 +236,14 @@ const PrescriptionFinal = () => {
                   </div>
                 ))}
               </div> */}
-               <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+               <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Provisional Dx
                 </b>
                 {provisionalDXs.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0">Date: {item.CreateDate}</p>
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}: {item.ProvisionalDiagnosis}
                       {""} [{item.OtherProvisionalDiagnosis}]{" "}
                       {item.DiagnosisStatus == "N"
@@ -246,14 +256,14 @@ const PrescriptionFinal = () => {
                 ))}
               </div>
 
-              <div className="pres_item pt-3">
-                <b className="d-block mb-0 py-2 border-bottom">
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
                   Lab Invenstigations
                 </b>
                 {labInvestigations.map((item, index) => (
-                  <div className="mb-0 mt-2 pe-2" key={index}>
-                    <b>Date: {item.CreateDate}</b>
-                    <p className="mb-0 mt-2 pe-2">
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0">Date: {item.CreateDate}</p>
+                    <p className="mb-0 mt-1 pe-2">
                       {index + 1}:{" "}
                       {item.Investigation }{""}
                         [{item.OtherInvestigation}]{" "}
@@ -268,7 +278,7 @@ const PrescriptionFinal = () => {
             </aside>
 
             <div className="rightSide position-relative w-100 py-3 px-4">
-              <h2 className="mb-4">&#8478;</h2>
+              <h2 className="mb-2">&#8478;</h2>
 
               {/* {rxDetails.map((item, index) => (
                 <div className="medicine mb-4" key={index}>
@@ -295,10 +305,10 @@ const PrescriptionFinal = () => {
                 </div>
               ))} */}
                {rxDetails.map((item, index) => (
-                <div className="medicine mb-4" key={index}>
-                  <p className="mb-0">
-                    <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}({item.DrugDose})
-                    <br></br>
+                <div className="medicine mb-0" key={index}>
+                  <p className="mb-0 font-13">
+                    <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}{item?.DrugDose && `(${item.DrugDose})`}
+
                     {item.OtherDrug} &nbsp; {item.Frequency} &nbsp;{" "}
                     {item.InstructionInBangla} &nbsp; - &nbsp;
                     {item.DrugDurationValue.includes("Day") ||
@@ -315,12 +325,12 @@ const PrescriptionFinal = () => {
                       ? item.DrugDurationValue.replace(/week/i, " সপ্তাহ")
                       : ""}
                   </p> 
-                  <p>{}</p>
+                  {/* <p>{}</p> */}
                 </div>
               ))}
 
               <div className="nextinfo">
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Follow-up / পরবর্তী সাক্ষাৎ</b>
                   </p>
@@ -340,7 +350,7 @@ const PrescriptionFinal = () => {
                   ))}
                 </div>
 
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Advice / পরামর্শ</b>
                   </p>
@@ -354,7 +364,7 @@ const PrescriptionFinal = () => {
                   ))}
                 </div>
 
-                <div className="medicine mb-4">
+                <div className="medicine mb-2">
                   <p className="mb-0">
                     <b>Referral / রেফারেল</b>
                   </p>
@@ -367,12 +377,6 @@ const PrescriptionFinal = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-
-              <div className="signatureBox text-center">
-                <img src={Signature} alt="img" className="signatureImage" />
-                <p className="mb-0">{userData?.name}</p>
-                <i className="my-0">{userData?.employee.FirstName}</i>
               </div>
             </div>
           </div>
@@ -396,28 +400,36 @@ const PrescriptionFinal = () => {
             ))}
           </div> */}
 
-          <footer className="footer d-flex justify-content-between">
-            <address className="mb-0">
-              <p className="mb-0">Haefa USA</p>
-              <p className="mb-0">311 Bedford St, Lexington MA 07420, USA</p>
-              <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-              <p className="mb-0">Website: www.healthonwheels.usa.org</p>
-            </address>
-            <address className="mb-0">
-              <p className="mb-0">Haefa Bangladesh</p>
-              <p className="mb-0">House: 31, Road: 16 Sector: 13 Uttara</p>
-              <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-              <p className="mb-0">Website: www.healthonwheels.usa.org</p>
-            </address>
-          </footer>
-          <p className="mb-0 text-center pb-4 logoText">
-            Powered By:
-            <img src={ApiLogo} alt="img" className="apiLogo" />
-          </p>
+          <div id="footer" className="">
+            <div className="signatureBox text-center">
+              <img src={Signature} alt="img" className="signatureImage" />
+              <p className="mb-0">{userData?.name}</p>
+              <i className="my-0">{userData?.employee.FirstName}</i>
+            </div>
+            <footer className="footer d-flex justify-content-between">
+            
+              <address className="mb-0">
+                <p className="mb-0">Haefa USA</p>
+                <p className="mb-0">311 Bedford St, Lexington MA 07420, USA</p>
+                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
+                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+              </address>
+              <address className="mb-0">
+                <p className="mb-0">Haefa Bangladesh</p>
+                <p className="mb-0">House: 31, Road: 16 Sector: 13 Uttara</p>
+                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
+                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+              </address>
+            </footer>
+            <p className="mb-0 text-center pb-4 logoText">
+              Powered By:
+              <img src={ApiLogo} alt="img" className="apiLogo" />
+            </p>
+          </div>
         </div>
       </section>
 
-      <div className="export container bg-light mt-3 p-3 d-flex justify-content-end">
+      <div className="export container bg-light mt-3 p-3 d-flex justify-content-end no-print">
         {/* <div className="prinBtns2">
             <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Instructions</Tooltip>} >
               <Button className="me-2  bg-dark border-0">

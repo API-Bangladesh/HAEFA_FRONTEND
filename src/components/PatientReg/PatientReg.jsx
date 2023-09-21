@@ -402,6 +402,15 @@ const PatientReg = () => {
   const doValidation = () => {
     return new Promise(function (resolve, reject) {
       const { RegistrationId, GenderId, MariatalStatus } = formData.patientInfo;
+      const {
+        District,
+        DistrictParmanent,
+        Thana,
+        ThanaParmanent,
+        Union,
+        UnionParmanent,
+      } = formData.addressInfo;
+
       let myErrors = {};
   
       if (_.isEmpty(RegistrationId)) {
@@ -412,6 +421,24 @@ const PatientReg = () => {
       }
       if (_.isEmpty(MariatalStatus)) {
         myErrors.MariatalStatus = "Marital Status is required.";
+      }
+      if (_.isEmpty(District)) {
+        myErrors.District = "District is required.";
+      }
+      if (_.isEmpty(DistrictParmanent)) {
+        myErrors.DistrictParmanent = "District is required.";
+      }
+      if (_.isEmpty(Thana)) {
+        myErrors.Thana = "Thana is required.";
+      }
+      if (_.isEmpty(ThanaParmanent)) {
+        myErrors.ThanaParmanent = "Thana is required.";
+      }
+      if (_.isEmpty(Union)) {
+        myErrors.Union = "Union is required.";
+      }
+      if (_.isEmpty(UnionParmanent)) {
+        myErrors.UnionParmanent = "Union is required.";
       }
   
       if (_.isEmpty(myErrors)) {
@@ -837,10 +864,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                    District
+                    District{" "}
+                    <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select 
-                    className="form-select form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.District && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={districts}
                     onChange={(e) => {
@@ -853,10 +883,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                  Upazila
+                  Upazila{" "}
+                  <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select
-                    className="form-select form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.Thana && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={upazilas}
                     onChange={(e) => {
@@ -869,10 +902,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                    Union
+                    Union{" "}
+                    <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select
-                    className="form-control form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.Union && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={unions}
                     onChange={handleSelectInputChange}
@@ -961,10 +997,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                    District
+                    District{" "}
+                    <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select 
-                    className="form-select form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.DistrictParmanent && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={districtsParmanent}
                     onChange={(e) => {
@@ -977,10 +1016,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                  Upazila
+                  Upazila{" "}
+                  <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select
-                    className="form-select form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.ThanaParmanent && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={upazilasParmanent}
                     onChange={(e) => {
@@ -993,10 +1035,13 @@ const PatientReg = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
-                    Union
+                    Union{" "}
+                    <span className="text-danger font-20 ">*</span>
                   </label>
                   <Select 
-                    className="form-control form-radious inputBox c-select"
+                    className={`form-select form-radious inputBox c-select ${
+                      errors?.UnionParmanent && "invalid-field"
+                    }`}
                     classNamePrefix="select"
                     options={unionsParmanent}
                     onChange={handleSelectInputChange}

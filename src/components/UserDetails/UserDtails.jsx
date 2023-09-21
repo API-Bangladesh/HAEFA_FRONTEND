@@ -99,13 +99,25 @@ const UserDtails = () => {
               <p className="text-capitalize font-16 m-0 mb-2">
                 <address className="mb-0">
                   <strong>Present Address: </strong>
-                  {`${patient?.address?.AddressLine1 + " "} ${
+                  {[
+                    patient?.address?.AddressLine1,
+                    patient?.address?.AddressLine2,
+                    patient?.address?.Village,
+                    patient?.address?.upazilla_address?.name,
+                    patient?.address?.PostCode,
+                    patient?.address?.district_address?.name,
+                    patient?.address?.Country,
+                  ]
+                  .filter((item) => item) // Remove undefined or falsy items
+                  .join(', ')}
+
+                  {/* {`${patient?.address?.AddressLine1 + " "} ${
                     patient?.address?.AddressLine2 + " "
                   } ${patient?.address?.Village + " "} ${
                     patient?.address?.Thana + " "
                   } ${patient?.address?.PostCode + " "} ${
                     patient?.address?.District + " "
-                  } ${patient?.address?.Country}`}
+                  } ${patient?.address?.Country}`} */}
                 </address>
 
                 {
